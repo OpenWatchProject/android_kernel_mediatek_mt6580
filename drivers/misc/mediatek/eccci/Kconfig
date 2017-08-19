@@ -1,0 +1,57 @@
+config MTK_ECCCI_DRIVER
+	tristate "ECCCI Driver"
+	depends on MTK_CCCI_DEVICES
+	default n
+	---help---
+	  This option enables ECCCI device driver support
+
+config MTK_ECCCI_CLDMA
+	tristate "ECCCI CLDMA driver"
+	depends on MTK_ECCCI_DRIVER
+	default y
+	---help---
+	  This option enables ECCCI CLDMA driver
+
+config MTK_ECCCI_CCIF
+	tristate "ECCCI CCIF driver"
+	depends on MTK_ECCCI_DRIVER
+	default n
+	---help---
+	  This option enables ECCCI CCIF driver
+
+config MTK_ECCCI_UT
+	tristate "ECCCI UT mode"
+	depends on MTK_ECCCI_DRIVER
+	default n
+	---help---
+	  This option enables ECCCI UT mode (software loopback, no CLDMA support)
+
+
+config MTK_C2K_SUPPORT
+	bool "MTK_C2K_SUPPORT"
+	depends on !ARCH_MT6735M
+	default n
+	help
+	  To support C2K modem
+	
+config EVDO_DT_SUPPORT
+	bool "EVDO_DT_SUPPORT"
+	depends on MTK_C2K_SUPPORT
+	default n
+	help
+	  To support CDMA+GSM dual talk feature
+	  
+config MTK_SVLTE_SUPPORT
+	bool "MTK_SVLTE_SUPPORT"
+	depends on MTK_C2K_SUPPORT
+	default n
+	help
+	  To support SVLTE feature
+
+config EVDO_DT_VIA_SUPPORT
+	bool "EVDO_DT_VIA_SUPPORT"
+	depends on MTK_C2K_SUPPORT
+	default n
+	help
+	  To support VIA CBP modem
+

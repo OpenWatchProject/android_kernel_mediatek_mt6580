@@ -1,0 +1,58 @@
+#
+# USB3.0 PHY
+#
+
+config MU3_PHY
+	bool "MU3 PHY"
+	default n
+	---help---
+	  Enables support MU3 PHY for SSUSB or XHCI.
+	  If unsure, say N.
+
+config U3_PHY_GPIO_SUPPORT
+	bool "MU3 PHY registers access by I2C"
+	depends on MU3_PHY
+	default n
+	---help---
+	  Enables support for read/write PHY registers by external I2C.
+	  If unsure, say N.
+
+config PROJECT_PHY
+	bool "MU3 ASIC PHY support"
+	depends on MU3_PHY
+	default n
+	---help---
+	  Enables support for ASIC PHY.
+	  If unsure, say N.
+
+config U3_PHY_AHB_SUPPORT
+	bool "MU3 PHY registers access by AHB"
+	depends on MU3_PHY
+	default n
+	---help---
+	  Enables support for read/write PHY registers by internal AHB.
+	  If unsure, say N.
+
+config C60802_SUPPORT
+	bool "MU3 PHY C60802 support"
+	depends on MU3_PHY
+	default n
+	---help---
+	  Enables support for external PHY(Ver C).
+	  If unsure, say N.
+
+config D60802_SUPPORT
+	bool "MU3 PHY D60802 support"
+	depends on MU3_PHY
+	default n
+	---help---
+	  Enables support for external PHY(Ver D).
+	  If unsure, say N.
+
+config E60802_SUPPORT
+	bool "MU3 PHY E60802 support"
+	depends on MU3_PHY
+	default n
+	---help---
+	  Enables support for external PHY(Ver E).
+	  If unsure, say N.

@@ -1,0 +1,3 @@
+config MTK_ATF_LOGGER
+	bool "atf logger kernel part"
+	depends on ARM_PSCI || ARM64 

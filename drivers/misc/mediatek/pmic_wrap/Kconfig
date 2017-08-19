@@ -1,0 +1,13 @@
+if MTK_LDVT
+config MTK_LDVT_PMIC_WRAP
+	bool "MediaTek PMIC_WRAP driver for LDVT"
+	default n
+	---help---
+	  MediaTek PMIC_WRAP driver for LDVT
+endif
+
+config MTK_PMIC_WRAP
+	bool "MediaTek PMIC_WRAP driver"
+	default y
+	---help---
+	  MediaTek PMIC_WRAP driver

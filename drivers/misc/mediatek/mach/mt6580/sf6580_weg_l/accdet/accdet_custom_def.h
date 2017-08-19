@@ -1,0 +1,11 @@
+
+// use accdet + EINT solution
+#define ACCDET_EINT
+//#define ACCDET_PIN_SWAP
+
+//#define ACCDET_28V_MODE
+
+#define ACCDET_SHORT_PLUGOUT_DEBOUNCE
+#define ACCDET_SHORT_PLUGOUT_DEBOUNCE_CN 20
+
+

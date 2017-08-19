@@ -1,0 +1,37 @@
+#nand
+menuconfig MTK_MTD_NAND
+        tristate "MediaTek Nand Support"
+        depends on MTD_NAND
+        ---help---
+          Enables support for NAND Flash chips wired to MediaTek chips.
+
+config MTK_MTD_NAND_INTERRUPT_SCHEME
+        bool "Nand Read/Write with interrupt scheme"
+        depends on MTK_MTD_NAND
+        default n
+        ---help---
+          Enable interrupt scheme in Nand Read/Write.
+
+config MTK_MLC_NAND_SUPPORT
+  tristate "Mediatek MLC NAND Support"
+  depends on MTK_MTD_NAND
+  ---help---
+          Enables support for MLC NAND.
+
+config MTK_COMBO_NAND_SUPPORT
+  tristate "Mediatek COMBO NAND Support"
+  depends on MTK_MTD_NAND
+  ---help---
+          Enables support for COMBO NAND.
+
+config MTK_FAT_ON_NAND
+  tristate "Mediatek FAT on NAND Support"
+  depends on MTK_MTD_NAND
+  ---help---
+          Enables support for FAT on NAND.
+
+config MTK_FACTORY_RESET_PROTECTION_SUPPORT
+  bool "Mediatek FRP Support"
+  depends on MTK_MTD_NAND
+  ---help---
+          Enables support for FRP on NAND.

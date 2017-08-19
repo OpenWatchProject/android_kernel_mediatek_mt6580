@@ -1,0 +1,20 @@
+#
+# MediaTek USB 3.0 Controller Driver
+#
+
+config USBIF_COMPLIANCE
+        tristate "MediaTek MUSB U3 USBIF COMPLIANCE"
+        default n
+
+config USB_MU3D_PIO_ONLY
+	tristate "MediaTek MUSB Gadget support EP0 PIO mode"
+	default n
+
+config USB_MU3D_DRV
+	tristate "MediaTek MUSB Gadget support"
+	default n
+
+config USB_MU3D_DVT
+	tristate "MediaTek MUSB Gadget support"
+	default n
+

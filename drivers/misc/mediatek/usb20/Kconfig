@@ -1,0 +1,65 @@
+#
+# USB Dual Role (OTG-ready) Controller Drivers
+# for silicon based on Mentor Graphics INVENTRA designs
+#
+
+# (M)HDRC = (Multipoint) Highspeed Dual-Role Controller
+#
+#
+
+config MTK_MUSB_QMU_SUPPORT
+	bool "QMU Transfer mode of MediaTek MUSB"
+	default n
+
+config USB_MTK_ACM_TEMP
+	tristate "MediaTek USB ACM Temp support"
+	default y
+
+config USB_MTK_HDRC
+	tristate "MediaTek MUSB support"
+	select USB_GADGET_SELECTED
+	select USB_GADGET_DUALSPEED
+	default y
+
+config USB_MTK_HDRC_GADGET
+	 tristate "MediaTek MUSB Gadget support"
+
+config USB_MTK_OTG
+	tristate "MediaTek MUSB OTG support"
+
+config USB_MTK_DUALMODE
+	bool "MediaTek DUAL MODE support"
+	default n
+
+config USB_MTK_DEBUG_FS
+	tristate "MediaTek MUSB Debug FS support"
+	depends on DEBUG_FS
+
+config USB_MTK_DEBUG
+	 tristate "MediaTek MUSB Debug support"
+
+config USB_MTK_HDRC_HCD
+	 tristate "MediaTek USB HDRC support"
+
+config MTK_USB_UNIQUE_SERIAL
+	 tristate "MediaTek USB unique serial number"
+
+config MTK_USBFSH # USBFSH
+	bool "MediaTek USB fullspeed Host driver"
+	default n
+
+config MUSBFSH_PIO_ONLY
+	bool "Transfer mode of MediaTek USB fullspeed Host driver"
+	default n
+
+config MTK_UART_USB_SWITCH
+	bool "MTK_UART_USB_SWITCH"
+	help
+	  Support share USB DP/DM as UART TX/RX.
+
+# USB # TODO Check Choice
+config MTK_USB_GADGET # USB_GADGET_MT6516 USB_GADGET_MT6573
+	boolean "MediaTek USB Gadget Driver"
+	select USB_GADGET_SELECTED
+	select USB_GADGET_DUALSPEED
+	default y

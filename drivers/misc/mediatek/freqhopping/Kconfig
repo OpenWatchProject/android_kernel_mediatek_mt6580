@@ -1,0 +1,8 @@
+config MTK_FREQ_HOPPING
+	bool "Enable MTK frequency hopping controler driver"
+	default y
+	help
+        Frequencey hopping controller provides spread spectrum and frequency
+        hopping on PLLs to prevent RF desense problems. Frequency hopping driver
+        provides APIs for controling spread spectrum and frequency hopping on
+        PLLs.

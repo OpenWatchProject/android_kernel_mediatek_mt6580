@@ -1,0 +1,38 @@
+# Power Related
+if POWER_SUPPLY
+config MT6326_PMIC
+	tristate "MediaTek PMIC Driver"
+	depends on ARCH_MT6516
+	default y
+	---help---
+          MediaTek PMIC 6326 Driver
+
+config MTK_PMIC
+	tristate "MediaTek Power Management Unit Driver"
+	default y
+	---help---
+	  Mediatek PMIC Driver
+
+config MTK_DUMMY_BATTERY
+	tristate "MediaTek Dummy Battery Driver"
+	depends on ARCH_MT6516
+	default n
+	---help---
+	   Use Dummy Battery
+
+config MTK_PMU
+	tristate "MediaTek Power Management Unit Driver"
+	depends on ARCH_MT6573
+	default y
+	---help---
+	  Use Mediatek PMU
+
+endif #POWER_SUPPLY
+
+if MTK_LDVT
+config MTK_LDVT_PMIC
+	bool "MediaTek PMIC driver for LDVT"
+	default y
+	---help---
+	  MediaTek PMIC driver for LDVT
+endif

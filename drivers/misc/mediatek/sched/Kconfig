@@ -1,0 +1,28 @@
+config MT_SCHED
+	bool "Enhance CPU affinity in hotplug"	
+ 	depends on HOTPLUG
+	default y
+	help
+	  The CPU affinity library for Hotplug enhancement is to achieve set CPU 
+	  affinity without take care kernel behavior and to avoid affect the original
+	  Linux design.
+	  
+config MT_PRIO_TRACER
+	bool "Record priority changes"
+	default n
+	help
+	  Export device node under debugfs/prio_tracer
+	  
+config MTK_SCHED_RQAVG_US
+	bool "Enable runqueue staticsic calculation used in user space operation"
+	depends on SMP && HIGH_RES_TIMERS
+	default n
+	help
+	  TLP estimation for user space CPUfreq governors
+
+config MTK_SCHED_RQAVG_KS
+	bool "Enable runqueue staticsic calculation used in kernel space operation"
+	depends on SMP
+	default n
+	help
+	  TLP estimation for kernel space CPUfreq governors, e.g., hotplug

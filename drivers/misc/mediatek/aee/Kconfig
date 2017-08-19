@@ -1,0 +1,28 @@
+config HAVE_AEE_FEATURE
+	bool "HAVE_AEE_FEATURE"
+	help
+	  AEE (Android Exception Engine) that designed by  Mediatek is an
+	  exception catching and debugging information generation mechanism.
+	  It can collect and dump information to filesystem
+	  (/sdcard/mtklog/aee_exp)  when fatel occur(E.g. kernel
+	  panic/android system server crash and ..)
+
+config MTK_AEE_FEATURE
+	tristate "Enable Android Exception Enhancement"
+	default n
+	select FIQ_GLUE if !TRUSTONIC_TEE_SUPPORT && !ARM_PSCI
+	---help---
+	  Enable Android Exception Enhancement
+
+config MTK_AEE_AED
+	tristate "Enable AEE Kernel Exception Report Daemon"
+	default y
+
+config MTK_AEE_IPANIC
+	tristate "Enable AEE Kernel Panic Dump"
+	default y
+
+config MTK_AEE_POWERKEY_HANG_DETECT
+	bool "powerkey monitor"
+	default n
+

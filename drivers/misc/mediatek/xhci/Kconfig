@@ -1,0 +1,24 @@
+#
+# Mediatek XHCI Driver
+#
+
+config MTK_XHCI
+	tristate "MediaTek U3 XHCI support"
+	default n
+	---help---
+	  Enables support Mediatek U3 XHCI functions.
+	  If unsure, say N.
+
+config MTK_OTG_PMIC_BOOST_5V
+	tristate "MediaTek PMIC BOOST 5V support"
+	default n
+	---help---
+	  Enables support PMIC BOOST 5V to be supply usb 5v power.
+	  If unsure, say N.
+
+config MTK_OTG_OC_DETECTOR
+	tristate "MediaTek Over Current Detector"
+	default n
+	---help---
+	  Enables support SW over current detect, if happen, cut down the 5V power.
+	  If unsure, say N.

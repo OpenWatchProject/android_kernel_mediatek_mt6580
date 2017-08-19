@@ -1,0 +1,7 @@
+config KEYBOARD_HID
+	tristate "Mediatek HID"
+	default n
+	depends on HID
+	help
+	  uhid driver provided by Mediatek.
+	  Say Y if you want to use Mediatek HID to parse reports. 

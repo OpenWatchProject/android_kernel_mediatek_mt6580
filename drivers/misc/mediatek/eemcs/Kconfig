@@ -1,0 +1,46 @@
+# EEMCS
+menuconfig MTK_EMCI_DEVICES # Use by MT6290M over SDIO
+	bool "EMCI Devices"
+	default n
+	---help---
+	  Say Y here to get to see options for device drivers from EEMCS.
+	  If you say N, all options in this submenu will be skipped and disabled.
+
+config MTK_EEMCS_DRIVER # EEMCS_DRIVER
+	tristate "EEMCS Driver"
+	depends on MTK_EMCI_DEVICES
+	default y
+	---help---
+	  This option enables EEMCS device driver support
+
+config MTK_ENABLE_MD5
+	bool "MTK_ENABLE_MD5"
+	depends on MTK_EEMCS_DRIVER
+	default y
+	help
+	  Enable/Disable External Modem 5 (LTE modem)
+
+config MTK_MD5_SUPPORT
+	int "MTK_MD5_SUPPORT"
+	depends on MTK_ENABLE_MD5
+	default 5
+	range 0 7
+	help
+	  modem 5 mode, value range(0-7):0(invalid),1(2g),2(3g),3(wg),4(tg)
+
+config MD5_SMEM_SIZE
+	hex "MD5_SMEM_SIZE"
+	depends on MTK_ENABLE_MD5
+	default 0x200000
+	help
+	  modem 5 share memory size.
+
+config MD5_SIZE
+	hex "MD5_SIZE"
+	depends on MTK_ENABLE_MD5
+	default 0xd00000
+	help
+	  modem 5 image size.
+
+# CCCI refine Done
+
