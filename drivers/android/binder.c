@@ -419,6 +419,16 @@ binder_defer_work(struct binder_proc *proc, enum binder_deferred_state defer);
 static inline void binder_lock(const char *tag);
 static inline void binder_unlock(const char *tag);
 
+static inline long copy_from_user_preempt_disabled(void *to, const void __user *from, long n)
+{
+	long ret;
+
+	preempt_enable_no_resched();
+	ret = copy_from_user(to, from, n);
+	preempt_disable();
+	return ret;
+}
+
 static int task_get_unused_fd_flags(struct binder_proc *proc, int flags)
 {
 	struct files_struct *files = proc->files;
@@ -2094,7 +2104,7 @@ static void binder_transaction(struct binder_proc *proc,
 		goto err_bad_offset;
 	}
 	if (!IS_ALIGNED(extra_buffers_size, sizeof(u64))) {
-		binder_user_error("%d:%d got transaction with unaligned buffers size, %lld\n",
+		binder_user_error("%d:%d got transaction with unaligned buffers size, %zd\n",
 				  proc->pid, thread->pid,
 				  extra_buffers_size);
 		return_error = BR_FAILED_REPLY;
