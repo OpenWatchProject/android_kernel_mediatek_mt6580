@@ -69,7 +69,6 @@ static struct dentry *binder_debugfs_dir_entry_root;
 static struct dentry *binder_debugfs_dir_entry_proc;
 static int binder_last_id;
 static struct workqueue_struct *binder_deferred_workqueue;
-static pid_t system_server_pid;
 
 #define RT_PRIO_INHERIT			"v1.7"
 #ifdef RT_PRIO_INHERIT
