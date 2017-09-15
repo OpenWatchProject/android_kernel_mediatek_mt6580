@@ -1814,7 +1814,7 @@ int cpy_check(int md_id, unsigned long start_addr, unsigned int size)
 
     curr_fs = get_fs();
     set_fs(KERNEL_DS);
-    fp_id = osal_filp_open_read_only("/system/etc/firmware/modem.img");
+    fp_id = osal_filp_open_read_only("/vendor/etc/firmware/modem.img");
     filp = (struct file *)osal_get_filp_struct(fp_id);
 
     filp->f_pos = 0;

@@ -469,17 +469,17 @@ static INT32 mt6620_probe(MTK_WCN_HIF_SDIO_CLTCTX cltCtx,
 	case WMTHWVER_MT6620_E3:
 	case WMTHWVER_MT6620_E4:
 	case WMTHWVER_MT6620_E5:
-		firmware_download("/etc/firmware/WIFI_RAM_CODE", cltCtx);
+		firmware_download("/vendor/etc/firmware/WIFI_RAM_CODE", cltCtx);
 		break;
 	case WMTHWVER_MT6620_E6:
 	default:
-		firmware_download("/etc/firmware/WIFI_RAM_CODE_E6", cltCtx);
+		firmware_download("/vendor/etc/firmware/WIFI_RAM_CODE_E6", cltCtx);
 		break;
 	}
 #elif defined(MT5931)
-	firmware_download("/etc/firmware/WIFI_RAM_CODE", cltCtx);
+	firmware_download("/vendor/etc/firmware/WIFI_RAM_CODE", cltCtx);
 #elif defined(MT6628)
-	firmware_download("/etc/firmware/WIFI_RAM_CODE_MT6628", cltCtx);
+	firmware_download("/vendor/etc/firmware/WIFI_RAM_CODE_MT6628", cltCtx);
 #endif
 
 	/* 1. initialize cdev */

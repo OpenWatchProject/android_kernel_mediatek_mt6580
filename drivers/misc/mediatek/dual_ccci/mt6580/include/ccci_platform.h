@@ -52,18 +52,18 @@
 
 
 #ifndef CONFIG_MODEM_FIRMWARE_PATH
-#define CONFIG_MODEM_FIRMWARE_PATH "/etc/firmware/"
+#define CONFIG_MODEM_FIRMWARE_PATH "/vendor/etc/firmware/"
 
 #define CONFIG_MODEM_FIRMWARE_CIP_PATH    "/custom/etc/firmware/"
 
-#define MOEDM_IMAGE_PATH "/etc/firmware/modem.img"
-#define DSP_IMAGE_PATH "/etc/firmware/DSP_ROM"
+#define MOEDM_IMAGE_PATH "/vendor/etc/firmware/modem.img"
+#define DSP_IMAGE_PATH "/vendor/etc/firmware/DSP_ROM"
 
-#define MOEDM_IMAGE_E1_PATH "/etc/firmware/modem_E1.img"
-#define DSP_IMAGE_E1_PATH "/etc/firmware/DSP_ROM_E1"
+#define MOEDM_IMAGE_E1_PATH "/vendor/etc/firmware/modem_E1.img"
+#define DSP_IMAGE_E1_PATH "/vendor/etc/firmware/DSP_ROM_E1"
 
-#define MOEDM_IMAGE_E2_PATH "/etc/firmware/modem_E2.img"
-#define DSP_IMAGE_E2_PATH "/etc/firmware/DSP_ROM_E2"
+#define MOEDM_IMAGE_E2_PATH "/vendor/etc/firmware/modem_E2.img"
+#define DSP_IMAGE_E2_PATH "/vendor/etc/firmware/DSP_ROM_E2"
 
 #endif
 

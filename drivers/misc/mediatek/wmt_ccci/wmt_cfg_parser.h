@@ -78,7 +78,7 @@ do { \
 #endif
 
 #define WMT_CFG_FILE "WMT_SOC.cfg"
-#define WMT_CFG_FILE_PREFIX "/system/etc/firmware/"
+#define WMT_CFG_FILE_PREFIX "/vendor/etc/firmware/"
 
 /*******************************************************************************
 *                             D A T A   T Y P E S

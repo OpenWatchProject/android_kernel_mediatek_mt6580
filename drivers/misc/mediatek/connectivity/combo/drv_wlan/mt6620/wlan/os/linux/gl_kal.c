@@ -813,29 +813,29 @@ WLAN_STATUS kalFirmwareOpen(IN P_GLUE_INFO_T prGlueInfo)
 	case WMTHWVER_MT6620_E3:
 	case WMTHWVER_MT6620_E4:
 	case WMTHWVER_MT6620_E5:
-		filp = filp_open("/etc/firmware/" CFG_FW_FILENAME, O_RDONLY, 0);
+		filp = filp_open("/vendor/etc/firmware/" CFG_FW_FILENAME, O_RDONLY, 0);
 		break;
 
 	case WMTHWVER_MT6620_E6:
 	default:
-		filp = filp_open("/etc/firmware/" CFG_FW_FILENAME "_E6", O_RDONLY, 0);
+		filp = filp_open("/vendor/etc/firmware/" CFG_FW_FILENAME "_E6", O_RDONLY, 0);
 		break;
 	}
 #elif defined(MT5931) && CFG_MULTI_ECOVER_SUPPORT
 	switch (wlanGetEcoVersion(prGlueInfo->prAdapter)) {
 	case HWVER_MT5931_E1:
 	case HWVER_MT5931_E2:
-		filp = filp_open("/etc/firmware/" CFG_FW_FILENAME "_E2", O_RDONLY, 0);
+		filp = filp_open("/vendor/etc/firmware/" CFG_FW_FILENAME "_E2", O_RDONLY, 0);
 		break;
 	case HWVER_MT5931_E3:
 	default:
-		filp = filp_open("/etc/firmware/" CFG_FW_FILENAME, O_RDONLY, 0);
+		filp = filp_open("/vendor/etc/firmware/" CFG_FW_FILENAME, O_RDONLY, 0);
 		break;
 	}
 #elif defined(MT6628)
-	filp = filp_open("/etc/firmware/" CFG_FW_FILENAME "_MT6628", O_RDONLY, 0);
+	filp = filp_open("/vendor/etc/firmware/" CFG_FW_FILENAME "_MT6628", O_RDONLY, 0);
 #else
-	filp = filp_open("/etc/firmware/" CFG_FW_FILENAME, O_RDONLY, 0);
+	filp = filp_open("/vendor/etc/firmware/" CFG_FW_FILENAME, O_RDONLY, 0);
 #endif
 	if (IS_ERR(filp)) {
 		DBGLOG(INIT, INFO, ("Open FW image: %s failed\n", CFG_FW_FILENAME));
