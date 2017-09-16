@@ -1,4 +1,10 @@
 #$(call all-subdir-src-or-makefile)
+subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include
+subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat/$(MTK_PLATFORM)/include
+subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat
+
+subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/mach/$(MTK_PLATFORM)/$(CONFIG_BUILD_ARM_APPENDED_DTB_IMAGE_NAMES)/leds/mt65xx
+
 include $(srctree)/drivers/misc/mediatek/Makefile.custom
 
 # For MT6795 FPGA bring-up

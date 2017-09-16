@@ -5,6 +5,9 @@
 
 include $(srctree)/drivers/misc/mediatek/Makefile.custom
 
+subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/cmdq/v2/ \
+		-I$(srctree)/drivers/misc/mediatek/cmdq/v2/$(CONFIG_MTK_PLATFORM)
+
 ifneq ($(CONFIG_ARM64), y)
 # For arm32
 #ifeq ($(CONFIG_MTK_INTERNAL), yes)

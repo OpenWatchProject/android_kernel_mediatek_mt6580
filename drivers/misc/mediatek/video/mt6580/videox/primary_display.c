@@ -10,8 +10,8 @@
 #include <linux/of.h>
 #include <linux/of_irq.h>
 #include <linux/slab.h>
-#include "mtk_ion.h"
-#include "ion_drv.h"
+#include <linux/mtk_ion.h>
+#include <linux/ion_drv.h>
 #include "debug.h"
 #include "ddp_log.h"
 #include "disp_drv_log.h"

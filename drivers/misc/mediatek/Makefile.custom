@@ -2,6 +2,10 @@
 MTK_PLATFORM := $(subst ",,$(CONFIG_MTK_PLATFORM))
 ARCH_MTK_PROJECT := $(subst ",,$(CONFIG_ARCH_MTK_PROJECT))
 
+subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include
+subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat/$(MTK_PLATFORM)/include
+subdir-ccflags-y += -I$(srctree)/drivers/misc/mediatek/include/mt-plat
+
 MTK_CUSTOM_PATH  := $(srctree)/drivers/misc/mediatek
 
 ifneq ($(CONFIG_ARM64), y)

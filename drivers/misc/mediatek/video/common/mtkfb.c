@@ -54,7 +54,7 @@
 #include "ddp_manager.h"
 
 #include "mtk_ovl.h"
-#include "ion_drv.h"
+#include <linux/ion_drv.h>
 #include "ddp_drv.h"
 
 #ifdef DISP_GPIO_DTS
