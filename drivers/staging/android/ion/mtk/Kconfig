@@ -1,6 +1,0 @@
-config MTK_ION
-	tristate "MTK ION -- ion multimedia heap"
-	depends on ION
-	help
-	  Choose this option to support multimedia heap.
-
