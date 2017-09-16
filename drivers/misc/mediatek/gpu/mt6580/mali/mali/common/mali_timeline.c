@@ -73,7 +73,7 @@ static void mali_timeline_sync_fence_callback(struct sync_fence *sync_fence, str
 	mali_scheduler_mask schedule_mask = MALI_SCHEDULER_MASK_EMPTY;
 	u32 tid = _mali_osk_get_tid();
 	mali_bool is_aborting = MALI_FALSE;
-	int fence_status = sync_fence->status;
+	int fence_status = sync_fence->status.counter;
 
 	MALI_DEBUG_ASSERT_POINTER(sync_fence);
 	MALI_DEBUG_ASSERT_POINTER(sync_fence_waiter);

@@ -1,3 +1,16 @@
+/*
+ * Copyright (C) 2015 MediaTek Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ */
+
 #include <linux/version.h>
 #include <asm/io.h>
 #include <linux/mm.h>
@@ -5,9 +18,14 @@
 #include <linux/genalloc.h>
 #include <linux/sched.h>
 #include <linux/mutex.h>
+//#include <linux/xlog.h>
 #include <linux/proc_fs.h>
 #include <linux/seq_file.h>
 #include <linux/rtc.h>
+
+#include <linux/module.h>
+
+#include <linux/ftrace_event.h>
 
 #include "ged_base.h"
 #include "ged_log.h"
@@ -91,6 +109,8 @@ static struct dentry* gpsGEDLogBufsDir = NULL;
 
 static GED_HASHTABLE_HANDLE ghHashTable = NULL;
 
+unsigned int ged_log_trace_enable = 0;
+
 //-----------------------------------------------------------------------------
 //
 //  GED Log Buf
@@ -163,7 +183,7 @@ static GED_ERROR __ged_log_buf_vprint(GED_LOG_BUF *psGEDLogBuf, const char *fmt,
     if (attrs & GED_LOG_ATTR_TIME)
     {
         psGEDLogBuf->psLine[psGEDLogBuf->i32LineCurrent].tattrs = GED_LOG_ATTR_TIME;
-        psGEDLogBuf->psLine[psGEDLogBuf->i32LineCurrent].time = cpu_clock(smp_processor_id());
+        psGEDLogBuf->psLine[psGEDLogBuf->i32LineCurrent].time = ged_get_time();
     }
 
     /* record the user time */
@@ -184,6 +204,13 @@ static GED_ERROR __ged_log_buf_vprint(GED_LOG_BUF *psGEDLogBuf, const char *fmt,
 
     buf_n = psGEDLogBuf->i32BufferSize - psGEDLogBuf->i32BufferCurrent;
     len = vsnprintf(psGEDLogBuf->pcBuffer + psGEDLogBuf->i32BufferCurrent, buf_n, fmt, args);
+
+	if (psGEDLogBuf->pcBuffer[psGEDLogBuf->i32BufferCurrent + len - 1] == '\n')
+	{
+		/* remove tailing newline */
+		psGEDLogBuf->pcBuffer[psGEDLogBuf->i32BufferCurrent + len - 1] = 0;
+		len -= 1;
+	}
 
     if (len > buf_n) len = buf_n;
 
@@ -230,7 +257,7 @@ static GED_ERROR __ged_log_buf_print(GED_LOG_BUF *psGEDLogBuf, const char *fmt, 
     GED_ERROR err;
 
     va_start(args, fmt);
-    err = __ged_log_buf_vprint(psGEDLogBuf, fmt, args, psGEDLogBuf->attrs);
+    err = __ged_log_buf_vprint(psGEDLogBuf, fmt, args, psGEDLogBuf->attrs | GED_LOG_ATTR_TIME);
     va_end(args);
 
     return err;
@@ -257,7 +284,7 @@ static int __ged_log_buf_write(GED_LOG_BUF *psGEDLogBuf, const char __user *pszB
     return cnt;
 }
 
-static void __ged_log_buf_check_get_early_list(GED_LOG_BUF_HANDLE hLogBuf, const char *pszName)
+static int __ged_log_buf_check_get_early_list(GED_LOG_BUF_HANDLE hLogBuf, const char *pszName)
 {
     struct list_head *psListEntry, *psListEntryTemp, *psList;
     GED_LOG_LISTEN *psFound = NULL, *psLogListen;
@@ -284,6 +311,8 @@ static void __ged_log_buf_check_get_early_list(GED_LOG_BUF_HANDLE hLogBuf, const
         list_del(&psFound->sList);
         write_unlock_bh(&gsGEDLogBufList.sLock);
     }
+
+	return !!psFound;
 }
 
 static ssize_t ged_log_buf_write_entry(const char __user *pszBuffer, size_t uiCount, loff_t uiPosition, void *pvData)
@@ -515,7 +544,7 @@ GED_LOG_BUF_HANDLE ged_log_buf_alloc(
 
     GED_LOGI("ged_log_buf_alloc OK\n");
 
-    __ged_log_buf_check_get_early_list(psGEDLogBuf->ui32HashNodeID, pszName);
+	while (__ged_log_buf_check_get_early_list(psGEDLogBuf->ui32HashNodeID, pszName));
 
     return (GED_LOG_BUF_HANDLE)psGEDLogBuf->ui32HashNodeID;
 }
@@ -952,6 +981,8 @@ GED_ERROR ged_log_system_init(void)
         goto ERROR;
     }
 
+	ged_log_trace_enable = 0;
+
     return err;
 
 ERROR:
@@ -974,6 +1005,42 @@ int ged_log_buf_write(GED_LOG_BUF_HANDLE hLogBuf, const char __user *pszBuffer, 
     return __ged_log_buf_write(psGEDLogBuf, pszBuffer, i32Count);
 }
 
+static unsigned long __read_mostly tracing_mark_write_addr = 0;
+static inline void __mt_update_tracing_mark_write_addr(void)
+{
+        if(unlikely(0 == tracing_mark_write_addr))
+        tracing_mark_write_addr = kallsyms_lookup_name("tracing_mark_write");
+}
+void ged_log_trace_begin(char *name)
+{
+	if(ged_log_trace_enable)
+	{
+        	__mt_update_tracing_mark_write_addr();
+        	event_trace_printk(tracing_mark_write_addr, "B|%d|%s\n", current->tgid, name);
+	}
+}
+EXPORT_SYMBOL(ged_log_trace_begin);
+ 
+void ged_log_trace_end(void)
+{
+	if(ged_log_trace_enable)
+	{
+        	__mt_update_tracing_mark_write_addr();
+        	event_trace_printk(tracing_mark_write_addr, "E\n");
+	}
+}
+EXPORT_SYMBOL(ged_log_trace_end);
+ 
+void ged_log_trace_counter(char *name, int count)
+{
+	if(ged_log_trace_enable)
+	{
+        	__mt_update_tracing_mark_write_addr();
+        	event_trace_printk(tracing_mark_write_addr, "C|5566|%s|%d\n", name, count);
+	}
+}
+EXPORT_SYMBOL(ged_log_trace_counter);
+
 EXPORT_SYMBOL(ged_log_buf_alloc);
 EXPORT_SYMBOL(ged_log_buf_reset);
 EXPORT_SYMBOL(ged_log_buf_get);
@@ -981,3 +1048,5 @@ EXPORT_SYMBOL(ged_log_buf_get_early);
 EXPORT_SYMBOL(ged_log_buf_free);
 EXPORT_SYMBOL(ged_log_buf_print);
 EXPORT_SYMBOL(ged_log_buf_print2);
+
+module_param(ged_log_trace_enable, uint, 0644);

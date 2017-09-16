@@ -40,7 +40,8 @@ MALI_STATIC_INLINE struct mali_sync_pt *to_mali_sync_pt(struct sync_pt *pt)
 }
 
 static struct sync_pt *timeline_dup(struct sync_pt *pt)
-{
+{    
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,18,0)
 	struct mali_sync_pt *mpt, *new_mpt;
 	struct sync_pt *new_pt;
 
@@ -54,8 +55,10 @@ static struct sync_pt *timeline_dup(struct sync_pt *pt)
 
 	mali_sync_flag_get(mpt->flag);
 	new_mpt->flag = mpt->flag;
-
-	return new_pt;
+#else
+    struct sync_pt *new_pt = NULL;
+#endif
+	return new_pt;    
 }
 
 static int timeline_has_signaled(struct sync_pt *pt)
@@ -107,6 +110,7 @@ static void timeline_release(struct sync_timeline *sync_timeline)
 	module_put(THIS_MODULE);
 }
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,18,0)
 static void timeline_print_pt(struct seq_file *s, struct sync_pt *sync_pt)
 {
 	struct mali_sync_pt *mpt;
@@ -119,6 +123,7 @@ static void timeline_print_pt(struct seq_file *s, struct sync_pt *sync_pt)
 
 	seq_printf(s, "%u", mpt->flag->point);
 }
+#endif
 
 static struct sync_timeline_ops mali_timeline_ops = {
 	.driver_name    = "Mali",
@@ -127,7 +132,7 @@ static struct sync_timeline_ops mali_timeline_ops = {
 	.compare        = timeline_compare,
 	.free_pt        = timeline_free_pt,
 	.release_obj    = timeline_release,
-	.print_pt       = timeline_print_pt,
+	//.print_pt       = timeline_print_pt,
 };
 
 struct sync_timeline *mali_sync_timeline_create(const char *name)

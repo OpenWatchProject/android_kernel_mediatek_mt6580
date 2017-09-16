@@ -29,14 +29,14 @@
 #include <linux/mali/mali_utgard.h>
 #include "mali_kernel_common.h"
 #include <linux/dma-mapping.h>
-#include <mach/mt_irq.h>
+/*#include <mach/mt_irq.h>*/
 
 #include "mali_kernel_common.h"
 #include "arm_core_scaling.h"
 #include "platform_pmm.h"
 #include "mali_pm.h"
 #include "mali_osk.h"
-#include "mt_reg_base.h"
+/*#include "mt_reg_base.h"*/
 
 static void mali_platform_device_release(struct device *device);
 static int mali_pm_suspend(struct device *device);
@@ -143,10 +143,10 @@ static int mali_pmm_reg_read(void *addr)
     return ((int)*((volatile unsigned int*)addr));
 }
 
-static void mali_pmm_reg_write(void *addr, unsigned int value)
+/*static void mali_pmm_reg_write(void *addr, unsigned int value)
 {
     (*((volatile unsigned int*)addr) = value);
-}
+}*/
 
 int mali_platform_device_register(void)
 {

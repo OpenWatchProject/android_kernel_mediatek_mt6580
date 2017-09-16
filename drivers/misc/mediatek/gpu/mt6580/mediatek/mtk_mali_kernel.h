@@ -15,7 +15,7 @@
 #ifndef __MTK_MALI_KERNEL_H__
 #define __MTK_MALI_KERNEL_H__
 
-#include "mt_reg_base.h"
+/*#include "mt_reg_base.h"*/
 #include <asm/io.h> /*For ioread/iowrite*/
 
 

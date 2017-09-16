@@ -17,9 +17,9 @@
 #include "mali_kernel_common.h"
 #include "mali_osk.h"
 #include "platform_pmm.h"
-#include "mach/mt_gpufreq.h"
-#include "mach/mt_spm.h"
-#include "mach/mt_wdt.h"
+#include "mt_gpufreq.h"
+/*#include "mach/mt_spm.h"*/
+/*#include "mach/mt_wdt.h"*/
 #include "mach/mt_clkmgr.h"
 
 #include <asm/atomic.h>
@@ -139,7 +139,7 @@ void mtk_set_dvfs_threshold_min(int min)
     {
         min = 1;
     }
-    atomic_set(&g_dvfs_threshold_min, &min);
+    atomic_set(&g_dvfs_threshold_min, min);
 }
 
 int mtk_get_dvfs_threshold_max(void)
@@ -169,7 +169,7 @@ void mtk_set_dvfs_deferred_count(int count)
 
 static void mali_dvfs_handler(struct work_struct *work)
 {
-    unsigned long flags;
+    /*unsigned long flags;*/
     int           enabled;
     int           duration;
     int           boostID;
@@ -227,7 +227,7 @@ static void mali_dvfs_handler(struct work_struct *work)
 }
 
 
-void mali_dispatch_dvfs_work()
+void mali_dispatch_dvfs_work(void)
 {
 #if MALI_LICENSE_IS_GPL
     // Adjust GPU frequency
@@ -243,7 +243,7 @@ void mali_dispatch_dvfs_work()
 }
 
 
-void mali_cancel_dvfs_work()
+void mali_cancel_dvfs_work(void)
 {
 #if MALI_LICENSE_IS_GPL
     if (mali_dvfs_queue)
@@ -296,7 +296,7 @@ void mtk_gpu_power_limit_callback(unsigned int limitID)
     }
 }
 
-static void mtk_touch_boost_gpu_freq()
+static void mtk_touch_boost_gpu_freq(void)
 {
     mtk_gpu_input_boost_callback(0);
 }
@@ -350,7 +350,7 @@ static void mtk_ged_hal_callback(unsigned int level)
     }
 }
 
-static unsigned int mtk_get_freq_level_count()
+static unsigned int mtk_get_freq_level_count(void)
 {
     return mt_gpufreq_get_dvfs_table_num();
 }
@@ -382,7 +382,11 @@ void mali_pmm_init(void)
 
 #if MALI_LICENSE_IS_GPL
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36))
+#if LINUX_VERSION_CODE < KERNEL_VERSION(3,18,0)    
     mali_dvfs_queue = alloc_workqueue("mali_dvfs", WQ_NON_REENTRANT | WQ_UNBOUND | WQ_HIGHPRI, 0);
+#else
+    mali_dvfs_queue = alloc_workqueue("mali_dvfs", WQ_UNBOUND | WQ_HIGHPRI, 0);
+#endif
 #else
     mali_dvfs_queue = create_workqueue("mali_dvfs");
 #endif

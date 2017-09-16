@@ -1,3 +1,16 @@
+/*
+ * Copyright (C) 2015 MediaTek Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ */
+
 #include <linux/module.h>
 #include <linux/slab.h>
 
@@ -17,7 +30,7 @@ typedef struct _GED_DEBUGFS_PRIV_DATA_
 	void*                   pvData;
 } GED_DEBUGFS_PRIV_DATA;
 //-----------------------------------------------------------------------------
-static GED_ERROR ged_debugFS_open(struct inode *psINode, struct file *psFile)
+static int ged_debugFS_open(struct inode *psINode, struct file *psFile)
 {
 	GED_DEBUGFS_PRIV_DATA *psPrivData = (GED_DEBUGFS_PRIV_DATA *)psINode->i_private;
 	int iResult;
@@ -95,7 +108,7 @@ GED_ERROR ged_debugFS_create_entry(
 
 	if (pfnWrite != NULL)
 	{
-		uiMode |= S_IWUSR;
+		uiMode |= S_IWUSR | S_IWGRP | S_IWOTH;
 	}
 
 	psEntry = debugfs_create_file(pszName,

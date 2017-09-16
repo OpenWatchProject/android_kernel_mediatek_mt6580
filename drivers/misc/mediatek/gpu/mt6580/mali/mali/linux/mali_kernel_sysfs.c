@@ -52,7 +52,7 @@
 #include "mali_pp_scheduler.h"
 
 #include "mach/mt_clkmgr.h"
-#include "mach/mt_gpufreq.h"
+#include "mt_gpufreq.h"
 
 #define PRIVATE_DATA_COUNTER_MAKE_GP(src) (src)
 #define PRIVATE_DATA_COUNTER_MAKE_PP(src) ((1 << 24) | src)
@@ -489,7 +489,7 @@ static ssize_t group_enabled_write(struct file *filp, const char __user *buf, si
 	}
 	buffer[count] = '\0';
 
-	r = strict_strtoul(&buffer[0], 10, &val);
+	r = kstrtoul(&buffer[0], 10, &val);
 	if (0 != r) {
 		return -EINVAL;
 	}
@@ -602,7 +602,7 @@ static ssize_t profiling_counter_src_write(struct file *filp, const char __user 
 
 	buf[cnt] = 0;
 
-	ret = strict_strtol(buf, 10, &val);
+	ret = kstrtol(buf, 10, &val);
 	if (ret < 0) {
 		return ret;
 	}
@@ -687,7 +687,7 @@ static ssize_t l2_l2x_counter_srcx_write(struct file *filp, const char __user *u
 
 	buf[cnt] = 0;
 
-	ret = strict_strtol(buf, 10, &val);
+	ret = kstrtol(buf, 10, &val);
 	if (ret < 0) {
 		return ret;
 	}
@@ -725,7 +725,7 @@ static ssize_t l2_all_counter_srcx_write(struct file *filp, const char __user *u
 
 	buf[cnt] = 0;
 
-	ret = strict_strtol(buf, 10, &val);
+	ret = kstrtol(buf, 10, &val);
 	if (ret < 0) {
 		return ret;
 	}
@@ -819,7 +819,7 @@ static ssize_t power_always_on_write(struct file *filp, const char __user *ubuf,
 	}
 	buf[cnt] = '\0';
 
-	ret = strict_strtoul(buf, 10, &val);
+	ret = kstrtoul(buf, 10, &val);
 	if (0 != ret) {
 		return ret;
 	}
@@ -945,7 +945,7 @@ static ssize_t profiling_record_write(struct file *filp, const char __user *ubuf
 
 	buf[cnt] = 0;
 
-	ret = strict_strtoul(buf, 10, &val);
+	ret = kstrtoul(buf, 10, &val);
 	if (ret < 0) {
 		return ret;
 	}
@@ -1208,7 +1208,7 @@ static const struct file_operations profiling_events_human_readable_fops = {
 
 #endif
 
-static ssize_t memory_used_read(struct file *filp, char __user *ubuf, size_t cnt, loff_t *ppos)
+/*static ssize_t memory_used_read(struct file *filp, char __user *ubuf, size_t cnt, loff_t *ppos)
 {
 	char   buf[64];
 	size_t r;
@@ -1220,7 +1220,7 @@ static ssize_t memory_used_read(struct file *filp, char __user *ubuf, size_t cnt
 
 	r = snprintf(buf, 64, "Current: %u, Peak: %u\n", mem, peak);
 	return simple_read_from_buffer(ubuf, cnt, ppos, buf, r);
-}
+}*/
 
 static int memory_debugfs_show(struct seq_file *s, void *private_data)
 {
@@ -1306,7 +1306,7 @@ static ssize_t user_settings_write(struct file *filp, const char __user *ubuf, s
 	}
 	buf[cnt] = '\0';
 
-	ret = strict_strtoul(buf, 10, &val);
+	ret = kstrtoul(buf, 10, &val);
 	if (0 != ret) {
 		return ret;
 	}
@@ -1371,7 +1371,7 @@ static ssize_t pmu_power_down_write(struct file *filp, const char __user *buf, s
 	}
 	buffer[count] = '\0';
 
-	ret = strict_strtoul(&buffer[0], 10, &val);
+	ret = kstrtoul(&buffer[0], 10, &val);
 	if (0 != ret) {
 		return -EINVAL;
 	}
@@ -1405,7 +1405,7 @@ static ssize_t pmu_power_up_write(struct file *filp, const char __user *buf, siz
 	}
 	buffer[count] = '\0';
 
-	ret = strict_strtoul(&buffer[0], 10, &val);
+	ret = kstrtoul(&buffer[0], 10, &val);
 	if (0 != ret) {
 		return -EINVAL;
 	}
@@ -1447,7 +1447,7 @@ static ssize_t pp_num_cores_enabled_write(struct file *filp, const char __user *
 	}
 	buffer[count] = '\0';
 
-	ret = strict_strtoul(&buffer[0], 10, &val);
+	ret = kstrtoul(&buffer[0], 10, &val);
 	if (0 != ret) {
 		return -EINVAL;
 	}
@@ -1508,7 +1508,7 @@ static ssize_t pp_core_scaling_enabled_write(struct file *filp, const char __use
 	}
 	buffer[count] = '\0';
 
-	ret = strict_strtoul(&buffer[0], 10, &val);
+	ret = kstrtoul(&buffer[0], 10, &val);
 	if (0 != ret) {
 		return -EINVAL;
 	}

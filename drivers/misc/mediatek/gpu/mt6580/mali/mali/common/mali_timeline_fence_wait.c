@@ -101,7 +101,7 @@ static mali_bool mali_timeline_fence_wait_check_status(struct mali_timeline_syst
 	if (-1 != fence->sync_fd) {
 		sync_fence = sync_fence_fdget(fence->sync_fd);
 		if (likely(NULL != sync_fence)) {
-			if (0 == sync_fence->status) {
+			if (0 == sync_fence->status.counter) {
 				ret = MALI_FALSE;
 			}
 		} else {

@@ -16,10 +16,9 @@
 #include <asm/uaccess.h>
 #include <asm/cacheflush.h>
 #include <linux/sched.h>
-#include <linux/seq_file.h>
 #include <linux/module.h>
 #include "mali_osk.h"
-#include "mt_reg_base.h"
+/*#include "mt_reg_base.h"*/
 #include "mali_kernel_common.h"
 
 extern void smi_dumpDebugMsg(void);
@@ -48,19 +47,6 @@ u32 _mali_osk_snprintf( char *buf, u32 size, const char *fmt, ... )
 #define CLK_CFG_0           (INFRA_BASE + 0x0040)
 #define VENCPLL_CON0        (DDRPHY_BASE+0x800)
 #define MMPLL_CON0          (APMIXEDSYS_BASE + 0x0230)
-
-void _mali_osk_ctxprintf(struct seq_file  *print_ctx, const char *fmt, ...)
-{
-	va_list args;
-	char buf[512];
-
-	va_start(args, fmt);
-	vscnprintf(buf, 512, fmt, args);
-	seq_printf(print_ctx, buf);
-	va_end(args);
-
-}
-
 
 void _mali_osk_abort(void)
 {
