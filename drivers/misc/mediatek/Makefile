@@ -52,11 +52,6 @@ obj-$(CONFIG_MEDIATEK_SOLUTION)	+= sched/
 obj-$(CONFIG_MTK_CMDQ) += cmdq/
 obj-$(CONFIG_MMPROFILE)	+= mmp/
 
-obj-$(CONFIG_MTK_VIDEO) += dispsys/
-obj-$(CONFIG_MTK_VIDEOX) += dispsys/
-
-obj-$(CONFIG_MTK_VIDEOX) += videox/
-
 obj-$(CONFIG_MTK_AUXADC)	+= auxadc/
 
 obj-$(CONFIG_KEYBOARD_HID)	+= bthid/
@@ -242,7 +237,7 @@ endif
 obj-$(CONFIG_MTK_PMIC)	+= power/
 obj-$(CONFIG_MTK_I2C)	+= i2c/
 obj-$(CONFIG_MTK_PWM)	+= pwm/
-obj-$(CONFIG_MTK_SMI)	+= smi/
+obj-$(CONFIG_MTK_SMI_EXT) += smi/
 obj-$(CONFIG_MTK_BTCVSD) += btcvsd/
 obj-$(CONFIG_MTK_SOUND)	+= sound/
 obj-$(CONFIG_MTK_SPI)	+= spi/
@@ -276,7 +271,7 @@ obj-$(CONFIG_MTK_SWITCH_TX_POWER) += sw_tx_power/
 
 obj-$(CONFIG_MTK_BTIF)	+= btif/
 obj-$(CONFIG_MTK_POWER_GS)	+= power_gs/
-obj-$(CONFIG_MTK_VIDEO) += video/
+obj-$(CONFIG_MTK_FB) 		+= video/
 obj-$(CONFIG_MTK_AEE_MRDUMP)	+= mrdump/
 obj-$(CONFIG_MTK_WMT_CCCI)	+= wmt_ccci/
 obj-$(CONFIG_MTK_VCOREFS)	+= vcorefs/

@@ -174,8 +174,6 @@ obj-$(CONFIG_MTK_SERIAL)	+= uart/
 obj-$(CONFIG_MTK_PMIC_WRAP)	+= pmic_wrap/
 
 obj-$(CONFIG_MTK_CMDQ) += cmdq/
-obj-$(CONFIG_MTK_FB) += dispsys/
-obj-$(CONFIG_MTK_VIDEOX) += videox/
 
 ifeq ($(CONFIG_MTK_HDMI_SUPPORT),y)
 obj-y	+= hdmi/
@@ -220,7 +218,7 @@ obj-$(CONFIG_CUSTOM_KERNEL_CHARGEPUMP)	+= chargepump/
 obj-$(CONFIG_MTK_PMIC)	+= power/
 obj-$(CONFIG_MTK_I2C)	+= i2c/
 obj-$(CONFIG_MTK_PWM)	+= pwm/
-obj-$(CONFIG_MTK_SMI)	+= smi/
+obj-$(CONFIG_MTK_SMI_EXT) += smi/
 obj-$(CONFIG_MTK_BTCVSD) += btcvsd/
 obj-$(CONFIG_MTK_SOUND)	+= sound/
 obj-$(CONFIG_MTK_SPI)	+= spi/
@@ -252,7 +250,7 @@ obj-$(CONFIG_MTK_SWITCH_TX_POWER) += sw_tx_power/
 
 obj-$(CONFIG_MTK_BTIF)	+= btif/
 obj-$(CONFIG_MTK_POWER_GS)	+= power_gs/
-obj-$(CONFIG_MTK_VIDEO) += video/
+obj-$(CONFIG_MTK_FB) 		+= video/
 obj-$(CONFIG_MTK_AEE_MRDUMP)	+= mrdump/
 obj-$(CONFIG_MTK_WMT_CCCI)	+= wmt_ccci/
 obj-$(CONFIG_MTK_VCOREFS)	+= vcorefs/
