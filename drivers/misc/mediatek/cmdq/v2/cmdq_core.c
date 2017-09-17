@@ -3583,7 +3583,6 @@ int32_t cmdq_core_subsys_from_phys_addr(uint32_t physAddr)
 	}
 
 	if (-1 == subsysID) {
-		/* printf error message */
 		CMDQ_ERR("unrecognized subsys, physAddr:0x%08x\n", physAddr);
 	}
 	return subsysID;
