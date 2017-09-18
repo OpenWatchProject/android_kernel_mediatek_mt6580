@@ -1,11 +1,11 @@
 /*
- * This confidential and proprietary software may be used only as
- * authorised by a licensing agreement from ARM Limited
- * (C) COPYRIGHT 2008-2015 ARM Limited
- * ALL RIGHTS RESERVED
- * The entire notice above must be reproduced on all authorised
- * copies and copies may only be made to the extent permitted
- * by a licensing agreement from ARM Limited.
+ * Copyright (C) 2010-2016 ARM Limited. All rights reserved.
+ * 
+ * This program is free software and is provided to you under the terms of the GNU General Public License version 2
+ * as published by the Free Software Foundation, and any use by you of this program is subject to the terms of such GNU licence.
+ * 
+ * A copy of the licence is included with the program, and can also be obtained from Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 /**
@@ -63,6 +63,9 @@ typedef unsigned long mali_bool;
 #endif
 
 #define MALI_HW_CORE_NO_COUNTER     ((u32)-1)
+
+
+#define MALI_S32_MAX 0x7fffffff
 
 /**
  * @brief OSK Error codes
@@ -448,6 +451,18 @@ typedef struct _mali_osk_wait_queue_t_struct _mali_osk_wait_queue_t;
 /** @brief Mali print ctx type which uses seq_file
   */
 typedef struct seq_file _mali_osk_print_ctx;
+
+#define _MALI_OSK_BITMAP_INVALIDATE_INDEX -1
+
+typedef struct _mali_osk_bitmap {
+	u32         reserve;
+	u32         last;
+	u32         max;
+	u32         avail;
+	_mali_osk_spinlock_t   *lock;
+	unsigned long          *table;
+} _mali_osk_bitmap_t;
+
 
 #ifdef __cplusplus
 }

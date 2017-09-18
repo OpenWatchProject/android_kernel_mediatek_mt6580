@@ -1,3 +1,16 @@
+/*
+ * Copyright (C) 2015 MediaTek Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ */
+
 #include <mali_kbase.h>
 #include <mali_kbase_mem.h>
 
@@ -210,7 +223,7 @@ static int proc_gpu_utilization_show(struct seq_file *m, void *v)
     unsigned int iCurrentFreq;
 
     iCurrentFreq = mt_gpufreq_get_cur_freq_index();
-    
+
     gl  = kbasep_get_gl_utilization();
     cl0 = kbasep_get_cl_js0_utilization();
     cl1 = kbasep_get_cl_js1_utilization();
@@ -311,6 +324,7 @@ static struct proc_dir_entry *mali_pentry;
 
 static struct workqueue_struct     *g_aee_workqueue = NULL;
 static struct work_struct          g_aee_work;
+static int g_aee_called = 0;
 static void aee_Handle(struct work_struct *_psWork)
 {
     /* avoid the build warnning */
@@ -321,19 +335,21 @@ static void aee_Handle(struct work_struct *_psWork)
         void mtk_debug_dump_registers(void);
         mtk_debug_dump_registers();
     }
-    aee_kernel_exception("gpulog", "aee dump gpulog");
-#endif
 
+#if 0
+    aee_kernel_exception("gpulog", "aee dump gpulog");
+    g_aee_called = 0;
+#endif
+#endif
 }
-void mtk_trigger_aee(unsigned int mtk_log, const char *msg)
+void mtk_trigger_aee_report(const char *msg)
 {
-    static int called = 0;
-    ged_log_buf_print2(mtk_log, GED_LOG_ATTR_TIME, "trigger aee: %s (aee warnning once)", msg);
-    if (called == 0)
+    MTK_err("trigger aee: %s (aee warnning)", msg);
+    if (g_aee_called == 0)
     {
         if (g_aee_workqueue)
         {
-            called = 1;
+			g_aee_called = 1;
             queue_work(g_aee_workqueue, &g_aee_work);
         }
     }
@@ -343,15 +359,27 @@ static struct work_struct          g_pa_work;
 static u64 g_pa;
 static void pa_Handle(struct work_struct *_psWork)
 {
-	bool kbase_debug_gpu_mem_mapping_check_pa(u64 pa);
     /* avoid the build warnning */
     _psWork = _psWork;
-	kbase_debug_gpu_mem_mapping_check_pa(g_pa);
+
+#if 0
+    {
+        bool kbase_debug_gpu_mem_mapping_check_pa(u64 pa);
+        kbase_debug_gpu_mem_mapping_check_pa(g_pa);
+    }
+#endif
 }
-void mtk_trigger_emi(u64 pa)
+void mtk_trigger_emi_report(u64 pa)
 {
-	g_pa = pa;
-	queue_work(g_aee_workqueue, &g_pa_work);
+    g_pa = pa;
+    MTK_err("emi mpu violation: pa: 0x%llx, dump registers and trigger check_pa", pa);
+#ifdef MTK_MT6797_DEBUG
+    {
+        void mtk_debug_dump_registers(void);
+        mtk_debug_dump_registers();
+    }
+#endif
+    queue_work(g_aee_workqueue, &g_pa_work);
 }
 
 void proc_mali_register(void)

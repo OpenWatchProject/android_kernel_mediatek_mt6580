@@ -33,6 +33,11 @@ void kbase_reg_write(struct kbase_device *kbdev, u16 offset, u32 value,
 	KBASE_DEBUG_ASSERT(kctx == NULL || kctx->as_nr != KBASEP_AS_NR_INVALID);
 	KBASE_DEBUG_ASSERT(kbdev->dev != NULL);
 
+#ifdef MTK_MT6797_DEBUG
+	if (offset == SHADER_PWROFF_LO)
+		return;
+#endif
+
 	if ((offset >= MEMORY_MANAGEMENT_BASE) && (offset <= (MEMORY_MANAGEMENT_BASE+0xFFF))) {
 		kbdev->mmu_reg_trace[0][kbdev->mmu_reg_trace_index] = offset;
 		kbdev->mmu_reg_trace[1][kbdev->mmu_reg_trace_index] = value;
@@ -105,13 +110,21 @@ static void kbase_report_gpu_fault(struct kbase_device *kbdev, int multiple)
 			address);
 	if (multiple)
 		dev_warn(kbdev->dev, "There were multiple GPU faults - some have not been reported\n");
-{
-	struct gpu_fault_event *event;
-	event = kmalloc(sizeof(event), GFP_ATOMIC);
-	event->gpu_fault_address = address;
-	INIT_WORK(&event->gpu_fault_work, kbasep_gpu_fault_worker);
-	queue_work(kbdev->gpu_fault_wq, &event->gpu_fault_work);
-}
+
+/*
+	if (kbdev->gpu_fault_wq)
+	{
+		struct gpu_fault_event *event;
+		event = kmalloc(sizeof(struct gpu_fault_event), GFP_ATOMIC);
+		event->gpu_fault_address = address;
+		INIT_WORK(&event->gpu_fault_work, kbasep_gpu_fault_worker);
+		queue_work(kbdev->gpu_fault_wq, &event->gpu_fault_work);
+	}
+	else
+	{
+		pr_MTK_err("kbdev->gpu_fault_wq = %p", kbdev->gpu_fault_wq);
+	}
+ */
 }
 
 void kbase_gpu_interrupt(struct kbase_device *kbdev, u32 val)

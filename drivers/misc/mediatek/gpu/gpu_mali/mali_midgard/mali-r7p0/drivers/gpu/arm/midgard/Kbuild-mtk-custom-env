@@ -30,8 +30,10 @@ ccflags-y += -I$(srctree)/drivers/misc/mediatek/base/power/$(CONFIG_MTK_PLATFORM
 #include path for pmic
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/power/$(CONFIG_MTK_PLATFORM)
 
+#include path for dram
+ccflags-y += -I$(srctree)/drivers/misc/mediatek/dramc/$(CONFIG_MTK_PLATFORM)
+
 ccflags-y += -DCONFIG_DEBUG_FS
-#Add MTK debug info
 ccflags-y += -DCONFIG_PROC_FS
 ccflags-y += -DENABLE_MTK_MEMINFO
 
@@ -62,8 +64,8 @@ endif
 
 #ccflags-y += -DCONFIG_HAVE_CLK
 
-ccflags-$(CONFIG_MTK_EXCL_MEMORY) += -DMMU_USE_RESERVED_CMA
-
 ifeq ($(CONFIG_MTK_PLATFORM), "mt6797")
 ccflags-y += -DMTK_MT6797_DEBUG
 endif
+
+ccflags-y += -DMTK_MALI_USE_GED_LOG

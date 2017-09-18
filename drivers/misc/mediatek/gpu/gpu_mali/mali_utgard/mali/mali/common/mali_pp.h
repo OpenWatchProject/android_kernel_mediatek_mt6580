@@ -1,11 +1,11 @@
 /*
- * This confidential and proprietary software may be used only as
- * authorised by a licensing agreement from ARM Limited
- * (C) COPYRIGHT 2011-2015 ARM Limited
- * ALL RIGHTS RESERVED
- * The entire notice above must be reproduced on all authorised
- * copies and copies may only be made to the extent permitted
- * by a licensing agreement from ARM Limited.
+ * Copyright (C) 2011-2016 ARM Limited. All rights reserved.
+ * 
+ * This program is free software and is provided to you under the terms of the GNU General Public License version 2
+ * as published by the Free Software Foundation, and any use by you of this program is subject to the terms of such GNU licence.
+ * 
+ * A copy of the licence is included with the program, and can also be obtained from Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 #ifndef __MALI_PP_H__
@@ -93,6 +93,7 @@ MALI_STATIC_INLINE enum mali_interrupt_result mali_pp_get_interrupt_result(struc
 	} else if (MALI200_REG_VAL_IRQ_END_OF_FRAME == rawstat_used) {
 		return MALI_INTERRUPT_RESULT_SUCCESS;
 	}
+
 	return MALI_INTERRUPT_RESULT_ERROR;
 }
 

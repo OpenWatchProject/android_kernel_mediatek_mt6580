@@ -1,11 +1,11 @@
 /*
- * This confidential and proprietary software may be used only as
- * authorised by a licensing agreement from ARM Limited
- * (C) COPYRIGHT 2008-2015 ARM Limited
- * ALL RIGHTS RESERVED
- * The entire notice above must be reproduced on all authorised
- * copies and copies may only be made to the extent permitted
- * by a licensing agreement from ARM Limited.
+ * Copyright (C) 2010-2016 ARM Limited. All rights reserved.
+ * 
+ * This program is free software and is provided to you under the terms of the GNU General Public License version 2
+ * as published by the Free Software Foundation, and any use by you of this program is subject to the terms of such GNU licence.
+ * 
+ * A copy of the licence is included with the program, and can also be obtained from Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 #ifndef __MALI_SESSION_H__
@@ -23,12 +23,14 @@ struct mali_soft_system;
 /* Number of frame builder job lists per session. */
 #define MALI_PP_JOB_FB_LOOKUP_LIST_SIZE 16
 #define MALI_PP_JOB_FB_LOOKUP_LIST_MASK (MALI_PP_JOB_FB_LOOKUP_LIST_SIZE - 1)
+/*Max pending big job allowed in kernel*/
+#define MALI_MAX_PENDING_BIG_JOB (2)
 
 struct mali_session_data {
 	_mali_osk_notification_queue_t *ioctl_queue;
 
 	_mali_osk_mutex_t *memory_lock; /**< Lock protecting the vm manipulation */
-    _mali_osk_mutex_t *cow_lock; /** < Lock protecting the cow memory free manipulation */
+	_mali_osk_mutex_t *cow_lock; /** < Lock protecting the cow memory free manipulation */
 #if 0
 	_mali_osk_list_t memory_head; /**< Track all the memory allocated in this session, for freeing on abnormal termination */
 #endif
@@ -55,6 +57,11 @@ struct mali_session_data {
 	size_t max_mali_mem_allocated_size; /**< The past max mali memory allocated size, which include mali os memory and mali dedicated memory. */
 	/* Added for new memroy system */
 	struct mali_allocation_manager allocation_mgr;
+
+#if defined(CONFIG_MALI_DMA_BUF_FENCE)
+	u32 fence_context;      /** <  The execution dma fence context this fence is run on. */
+	_mali_osk_atomic_t fence_seqno; /** < Alinear increasing sequence number for this dma fence context. */
+#endif
 };
 
 _mali_osk_errcode_t mali_session_initialize(void);
@@ -78,6 +85,7 @@ MALI_STATIC_INLINE void mali_session_unlock(void)
 void mali_session_add(struct mali_session_data *session);
 void mali_session_remove(struct mali_session_data *session);
 u32 mali_session_get_count(void);
+wait_queue_head_t *mali_session_get_wait_queue(void);
 
 #define MALI_SESSION_FOREACH(session, tmp, link) \
 	_MALI_OSK_LIST_FOREACHENTRY(session, tmp, &mali_sessions, struct mali_session_data, link)

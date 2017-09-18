@@ -1,11 +1,11 @@
 /**
- * This confidential and proprietary software may be used only as
- * authorised by a licensing agreement from ARM Limited
- * (C) COPYRIGHT 2010-2015 ARM Limited
- * ALL RIGHTS RESERVED
- * The entire notice above must be reproduced on all authorised
- * copies and copies may only be made to the extent permitted
- * by a licensing agreement from ARM Limited.
+ * Copyright (C) 2010-2016 ARM Limited. All rights reserved.
+ * 
+ * This program is free software and is provided to you under the terms of the GNU General Public License version 2
+ * as published by the Free Software Foundation, and any use by you of this program is subject to the terms of such GNU licence.
+ * 
+ * A copy of the licence is included with the program, and can also be obtained from Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 /**
@@ -15,6 +15,7 @@
 
 #include <linux/sched.h>
 
+#include "mali_kernel_linux.h"
 #ifdef CONFIG_PM_RUNTIME
 #include <linux/pm_runtime.h>
 #endif /* CONFIG_PM_RUNTIME */
@@ -154,16 +155,17 @@ _mali_osk_errcode_t _mali_osk_pm_dev_ref_get_async(void)
     return _MALI_OSK_ERR_OK;
 }
 
+
 /* Can run in atomic context */
 void _mali_osk_pm_dev_ref_put(void)
 {
 #ifdef CONFIG_PM_RUNTIME
-    MALI_DEBUG_ASSERT_POINTER(mali_platform_device);
+	MALI_DEBUG_ASSERT_POINTER(mali_platform_device);
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 37))
-    pm_runtime_mark_last_busy(&(mali_platform_device->dev));
-    pm_runtime_put_autosuspend(&(mali_platform_device->dev));
+	pm_runtime_mark_last_busy(&(mali_platform_device->dev));
+	pm_runtime_put_autosuspend(&(mali_platform_device->dev));
 #else
-    pm_runtime_put(&(mali_platform_device->dev));
+	pm_runtime_put(&(mali_platform_device->dev));
 #endif
 #else
     if(_mali_osk_atomic_dec_return(&mtk_mali_pm_ref_count) == 0)

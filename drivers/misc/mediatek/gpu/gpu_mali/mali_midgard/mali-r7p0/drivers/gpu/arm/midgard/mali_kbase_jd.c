@@ -656,7 +656,7 @@ static void jd_force_failure(struct kbase_device *kbdev, struct kbase_jd_atom *k
 			kbdev->force_replay_limit =
 			   (prandom_u32() % KBASEP_FORCE_REPLAY_RANDOM_LIMIT) + 1;
 
-		dev_info(kbdev->dev, "force_replay : promoting to error\n");
+		dev_MTK_info(kbdev->dev, "force_replay : promoting to error\n");
 	}
 }
 
@@ -1143,7 +1143,7 @@ int kbase_jd_submit(struct kbase_context *kctx,
 	beenthere(kctx, "%s", "Enter");
 
 	if ((kctx->jctx.sched_info.ctx.flags & KBASE_CTX_FLAG_SUBMIT_DISABLED) != 0) {
-		dev_err(kbdev->dev, "Attempt to submit to a context that has SUBMIT_DISABLED set on it");
+		dev_MTK_err(kbdev->dev, "Attempt to submit to a context that has SUBMIT_DISABLED set on it");
 		return -EINVAL;
 	}
 
@@ -1154,7 +1154,7 @@ int kbase_jd_submit(struct kbase_context *kctx,
 #else
 	if (submit_data->stride != sizeof(base_jd_atom_v2)) {
 #endif /* BASE_LEGACY_UK6_SUPPORT */
-		dev_err(kbdev->dev, "Stride passed to job_submit doesn't match kernel");
+		dev_MTK_err(kbdev->dev, "Stride passed to job_submit doesn't match kernel");
 		return -EINVAL;
 	}
 
@@ -1346,11 +1346,11 @@ void kbase_jd_done_worker(struct work_struct *data)
 
 	if (katom->event_code != BASE_JD_EVENT_DONE)
 	{
-		dev_err(kbdev->dev,
+		dev_MTK_err(kbdev->dev,
 			"t6xx: GPU fault 0x%02lx from job slot %d\n",
 					(unsigned long)katom->event_code,
 								katom->slot_nr);
-		mtk_trigger_aee(kbdev->mtk_log, "t6xx: GPU fault katom->event_code != BASE_JD_EVENT_DONE");
+		mtk_trigger_aee_report("t6xx: GPU fault katom->event_code != BASE_JD_EVENT_DONE");
 	}
 
 	if (kbase_hw_has_issue(kbdev, BASE_HW_ISSUE_8316))

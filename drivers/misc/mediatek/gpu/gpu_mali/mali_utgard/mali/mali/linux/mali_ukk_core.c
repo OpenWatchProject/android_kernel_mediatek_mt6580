@@ -1,11 +1,11 @@
 /*
- * This confidential and proprietary software may be used only as
- * authorised by a licensing agreement from ARM Limited
- * (C) COPYRIGHT 2008-2015 ARM Limited
- * ALL RIGHTS RESERVED
- * The entire notice above must be reproduced on all authorised
- * copies and copies may only be made to the extent permitted
- * by a licensing agreement from ARM Limited.
+ * Copyright (C) 2010-2016 ARM Limited. All rights reserved.
+ * 
+ * This program is free software and is provided to you under the terms of the GNU General Public License version 2
+ * as published by the Free Software Foundation, and any use by you of this program is subject to the terms of such GNU licence.
+ * 
+ * A copy of the licence is included with the program, and can also be obtained from Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 #include <linux/fs.h>       /* file system operations */
 #include <linux/slab.h>     /* memort allocation functions */
@@ -129,4 +129,18 @@ int request_high_priority_wrapper(struct mali_session_data *session_data, _mali_
 	kargs.ctx = 0;
 
 	return map_errcode(err);
+}
+
+int pending_submit_wrapper(struct mali_session_data *session_data, _mali_uk_pending_submit_s __user *uargs)
+{
+	_mali_uk_pending_submit_s kargs;
+	_mali_osk_errcode_t err;
+
+	MALI_CHECK_NON_NULL(uargs, -EINVAL);
+
+	kargs.ctx = (uintptr_t)session_data;
+	err = _mali_ukk_pending_submit(&kargs);
+	if (_MALI_OSK_ERR_OK != err) return map_errcode(err);
+
+	return 0;
 }

@@ -635,19 +635,3 @@ bool mtk_get_vsync_offset_debug_status(unsigned int* pui32DebugStatus)
 }
 EXPORT_SYMBOL(mtk_get_vsync_offset_debug_status);
 
-//-----------------------------------------------------------------------------
-
-void (*mtk_report_3D_fence_count_fp)(int i32Count) = NULL;
-EXPORT_SYMBOL(mtk_report_3D_fence_count_fp);
-
-bool mtk_report_3D_fence_count(int i32Count)
-{
-    if (NULL != mtk_report_3D_fence_count_fp)
-    {
-	mtk_report_3D_fence_count_fp(i32Count);
-	return true;
-    }
-    return false;
-}
-EXPORT_SYMBOL(mtk_report_3D_fence_count);
-
