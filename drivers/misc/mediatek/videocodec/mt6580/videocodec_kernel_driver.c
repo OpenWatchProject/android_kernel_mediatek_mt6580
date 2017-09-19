@@ -36,13 +36,17 @@
 #include <linux/semaphore.h>
 #include <mt-plat/dma.h>
 #include <linux/delay.h>
-/* #include <linux/earlysuspend.h> */
+
 #include "mt-plat/sync_write.h"
 /* #include "mach/mt_reg_base.h" */
 #include "mt_clkmgr.h"
 
 #ifdef CONFIG_MTK_HIBERNATION
-#include <mtk_hibernate_dpm.h>
+#include "mach/mtk_hibernate_dpm.h"
+#endif
+
+#ifdef CONFIG_HAS_EARLYSUSPEND
+#include <linux/earlysuspend.h>
 #endif
 
 #include "videocodec_kernel_driver.h"
