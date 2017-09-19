@@ -11,9 +11,18 @@
  * GNU General Public License for more details.
  */
 
-#ifndef __VIDEOCODEC_KERNEL_H__
-#define __VIDEOCODEC_KERNEL_H__
+#ifndef _HAL_TYPES_PRIVATE_H_
+#define _HAL_TYPES_PRIVATE_H_
 
-unsigned long pmem_user_v2p_video(unsigned long va);
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-#endif /* __VIDEOCODEC_KERNEL_H__ */
+#include "val_types_private.h"
+#include "hal_types_public.h"
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* #ifndef _HAL_TYPES_PRIVATE_H_ */
