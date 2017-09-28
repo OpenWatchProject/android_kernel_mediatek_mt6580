@@ -5,6 +5,23 @@
 /include/ "cust_eint.dtsi"
 
 / {
+
+	firmware {
+		android {
+			compatible = "android,firmware";
+			fstab {
+				compatible = "android,fstab";
+				system {
+					compatible = "android,system";
+					dev = "/dev/block/platform/mtk-msdc.0/11120000.MSDC0/by-name/system";
+					type = "ext4";
+					mnt_flags = "ro,commit=1,noauto_da_alloc";
+					fsmgr_flags = "wait";
+				};
+			};
+		};
+	};
+
 	memory@80000000 {
 		device_type = "memory";
 		reg = <0 0x80000000 0 0x1E800000>;
