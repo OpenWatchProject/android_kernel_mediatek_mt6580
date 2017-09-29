@@ -6473,7 +6473,10 @@ int bhy_resume(struct device *dev)
 	atomic_set(&client_data->in_suspend, 0);
 
 	/* Flush after resume */
+/* we don't use batching. There shouldn't be a need to flush
+// this is preventing sensor hal to crash on resume
 	ret = bhy_enqueue_flush(client_data, BHY_FLUSH_FLUSH_ALL);
+*/
 	if (ret < 0) {
 		PERR("Write sensor flush failed");
 		return ret;
