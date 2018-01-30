@@ -48,7 +48,7 @@
 
 #ifdef CONFIG_HAS_EARLYSUSPEND
 #include <linux/earlysuspend.h>
-#endif 
+#endif
 
 #include <linux/interrupt.h>
 #include <linux/time.h>
@@ -67,7 +67,7 @@
 /* Pre-defined definition */
 #define TPD_TYPE_CAPACITIVE
 //#define TPD_TYPE_RESISTIVE
-//#define TPD_POWER_SOURCE       
+//#define TPD_POWER_SOURCE
 #define TPD_POWER_SOURCE_CUSTOM         	PMIC_APP_CAP_TOUCH_VDD
 
 #define TPD_I2C_NUMBER           1
@@ -123,8 +123,8 @@
 #define TP_OK						            0x04
 #define MAX_BUFFER_SIZE             130
 
-//for double click wakeup 
-//#define DOUBLE_CLICK_WAKE
+//for double click wakeup
+#define DOUBLE_CLICK_WAKE
 #ifdef DOUBLE_CLICK_WAKE
 #define GESTURE_DOUBLECLICK 0x01
 #endif
@@ -2588,5 +2588,3 @@ unsigned char cfg_rawData[512] = {
 	0x21, 0x61, 0x99, 0x01, 0x00, 0x00, 0x03, 0xF5
 };
 #endif /* TOUCHPANEL_H__ */
-
-

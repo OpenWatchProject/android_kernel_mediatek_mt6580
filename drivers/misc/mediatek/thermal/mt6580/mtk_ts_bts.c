@@ -616,7 +616,7 @@ static int pre_temp1=0;
 
 	bts_cur_temp = t_ret;
 
-    if (t_ret > 40000) // abnormal high temp
+    if (t_ret > 45000) // abnormal high temp
         printk("[Power/BTS_Thermal] T_AP=%d\n", t_ret);
 
 	mtkts_bts_dprintk("[mtkts_bts_get_hw_temp] T_AP, %d\n", t_ret);
@@ -1265,4 +1265,3 @@ module_exit(mtkts_bts_exit);
 module_init(mtkts_bts_init);
 module_exit(mtkts_bts_exit);
 #endif
-

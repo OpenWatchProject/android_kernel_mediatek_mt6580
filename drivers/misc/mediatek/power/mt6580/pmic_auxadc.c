@@ -67,9 +67,17 @@ extern void __iomem *spm_base;
 //==============================================================================
 // PMIC-AUXADC global variable
 //==============================================================================
+#define PMICLOG_ENABLED
+#define PMICLOG_DETAIL 0
+
 #define PMIC_RD32(addr)            __raw_readl((void *)addr)
 #define PMICTAG                "[Auxadc] "
-#define PMICLOG(fmt, arg...)   printk(PMICTAG fmt,##arg)
+
+#ifdef PMICLOG_ENABLED
+		#define PMICLOG(fmt, arg...)   printk(PMICTAG fmt,##arg)
+#else
+		#define PMICLOG(fmt, arg...)
+#endif
 
 #define TURN_OFF                0
 #define TURN_ON                 1
@@ -223,7 +231,8 @@ kal_int32 PMIC_IMM_GetCurrent(void)
 	wake_unlock(&pmicAuxadc_irq_lock);
 	mutex_unlock(&pmic_adc_mutex);
 
-	PMICLOG("[PMIC_IMM_GetCurrent(share lock)] raw batsns:%d raw isense:%d batsns:%d isense:%d iCharging:%d cnt:%d\n", batsns,isense,ADC_BAT_SENSE,ADC_I_SENSE,ICharging,count);
+	if (PMICLOG_DETAIL)
+			PMICLOG("[PMIC_IMM_GetCurrent(share lock)] raw batsns:%d raw isense:%d batsns:%d isense:%d iCharging:%d cnt:%d\n", batsns,isense,ADC_BAT_SENSE,ADC_I_SENSE,ICharging,count);
         pmic_turn_on_clock(TURN_OFF);
 	return ICharging;
 
@@ -499,7 +508,9 @@ kal_uint32 PMIC_IMM_GetOneChannelValue(mt6350_adc_ch_list_enum dwChannel, int de
         	PMICLOG("[AUXADC] clock2 = %x\n", clock );        	        	
        }
        #endif
-       PMICLOG("[AUXADC] ch=%d raw=%d data=%d \n", dwChannel, ret_data,adc_result);
+
+			 if (PMICLOG_DETAIL)
+       		PMICLOG("[AUXADC] ch=%d raw=%d data=%d \n", dwChannel, ret_data,adc_result);
 
 	//return ret_data;
 	

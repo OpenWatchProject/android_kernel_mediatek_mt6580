@@ -37,7 +37,7 @@
 #include <cust_eint.h>
 
 #include "tpd_custom_it7260.h"
-#ifndef TPD_NO_GPIO 
+#ifndef TPD_NO_GPIO
 #include "cust_gpio_usage.h"
 #endif
 #include <linux/wakelock.h>
@@ -51,7 +51,7 @@
 
 //#define __IT7260_DEBUG_A158_JFSS__ //lshun use tp for A152
 #define s32 int
-//#define I2C_SUPPORT_RS_DMA 
+//#define I2C_SUPPORT_RS_DMA
 //extern kal_bool upmu_chr_det(upmu_chr_list_enum chr); // remove
 
 #define ABS(x)				((x<0)?-x:x)
@@ -63,7 +63,7 @@
 #define IOC_MAGIC			'd'
 #define IOCTL_SET 			_IOW(IOC_MAGIC, 1, struct ioctl_cmd168)
 #define IOCTL_GET 			_IOR(IOC_MAGIC, 2, struct ioctl_cmd168)
-#define HAS_8_BYTES_LIMIT 
+#define HAS_8_BYTES_LIMIT
 extern struct tpd_device *tpd;
 
 static int tpd_flag = 0;
@@ -128,7 +128,7 @@ static  void it7260_power_switch(s32 state)
 						printk("regulator_get() Ok!\n");
 					}
 				}
-	
+
 				printk("regulator_set_voltage--begin\r\n");
 				ret=regulator_set_voltage(tpd->reg, 2800000, 2800000);  // set 2.8v
 				printk("regulator_set_voltage--end\r\n");
@@ -168,7 +168,7 @@ static  void it7260_power_switch(s32 state)
 			printk("Invalid power switch command!");
 			break;
 		}
-} 
+}
 
 
  #if 0
@@ -230,7 +230,7 @@ extern void mt65xx_eint_registration(unsigned int eint_num, unsigned int is_deb_
 
 static struct i2c_client *i2c_client = NULL;
 
-static const struct i2c_device_id tpd_i2c_id[] ={{CTP_NAME,0},{}}; // {{"mtk-tpd",0},{}}; 
+static const struct i2c_device_id tpd_i2c_id[] ={{CTP_NAME,0},{}}; // {{"mtk-tpd",0},{}};
 
 static unsigned short force[] = {0, 0x8C, I2C_CLIENT_END,I2C_CLIENT_END};
 static const unsigned short * const forces[] = { force, NULL };
@@ -243,13 +243,13 @@ struct i2c_driver tpd_i2c_driver = {
 	.name = CTP_NAME,
 	.owner = THIS_MODULE,
 	},
-    .probe			= tpd_i2c_probe,   
+    .probe			= tpd_i2c_probe,
     .remove = tpd_i2c_remove,
-    .detect			= tpd_i2c_detect,                           
-    .driver.name 	= CTP_NAME, //"mtk-tpd", 
-    .id_table 		= tpd_i2c_id,                             
-    .address_list 	= forces,                        
-}; 
+    .detect			= tpd_i2c_detect,
+    .driver.name 	= CTP_NAME, //"mtk-tpd",
+    .id_table 		= tpd_i2c_id,
+    .address_list 	= forces,
+};
 
 struct ite7260_data {
 	rwlock_t lock;
@@ -288,7 +288,7 @@ static ssize_t IT7260_upgrade_store(struct device *dev, struct device_attribute 
 		}
 	}
 	mt_eint_unmask(CUST_EINT_TOUCH_PANEL_NUM);
-	
+
 	//fnFirmwareDownload(fw_size,rawData,config_size,cfg_rawData);
 	return count;
 }
@@ -309,18 +309,18 @@ waitCommandDone();
     pucCommandBuffer[4] = 0x08;
     pucCommandBuffer[5] = 0x00;
     pucCommandBuffer[6] = 0x00;
-    pucCommandBuffer[7] = 0xD8;	
+    pucCommandBuffer[7] = 0xD8;
 
 	ret = tpd_i2c_write(i2c_client, pucCommandBuffer, 8);
   	msleep(10);
 waitCommandDone();
 	ret = tpd_i2c_read(i2c_client, &verFw[0], 4, 0xA0);
-		
+
 	if (ret < 0)
 		num_read_chars = snprintf(buf, PAGE_SIZE,"get tp fw version fail!\n");
 	else
 		num_read_chars = snprintf(buf, PAGE_SIZE, "%02x %02x %02x %02x \n", verFw[0], verFw[1], verFw[2], verFw[3]);
-	
+
 	return num_read_chars;
 }
 
@@ -340,7 +340,7 @@ waitCommandDone();
  	 if(ret != 3){
  	       printk("[mtk-tpd] i2c write communcate error in getting Cfg version : 0x%x\n", ret);
 	  }
- 	  msleep(10);	
+ 	  msleep(10);
 
 waitCommandDone();
 
@@ -350,7 +350,7 @@ waitCommandDone();
 		num_read_chars = snprintf(buf, PAGE_SIZE,"get tp config version fail!\n");
 	else
 		num_read_chars = snprintf(buf, PAGE_SIZE, "%02x %02x %02x %02x \n", verCfg[1], verCfg[2], verCfg[3], verCfg[4]);
-	
+
 	return num_read_chars;
 }
 
@@ -507,7 +507,7 @@ struct file_operations ite7260_fops = {
 	//.ioctl		= ite7260_ioctl,
 	.unlocked_ioctl = ite7260_ioctl,
 };
-		
+
 static struct miscdevice ctp_dev = {
 	.minor	= MISC_DYNAMIC_MINOR,
 	.name	= CTP_NAME,
@@ -517,8 +517,8 @@ static struct miscdevice ctp_dev = {
 
 
 static int tpd_i2c_detect(struct i2c_client *client, int kind, struct i2c_board_info *info) {
-  //  strcpy(info->type, "mtk-tpd"); 
-  strcpy(info->type, CTP_NAME); 
+  //  strcpy(info->type, "mtk-tpd");
+  strcpy(info->type, CTP_NAME);
     return 0;
 }
 static int tpd_i2c_write(struct i2c_client *client, uint8_t *buf, int len)
@@ -530,20 +530,20 @@ static int tpd_i2c_write(struct i2c_client *client, uint8_t *buf, int len)
     for(i = 0 ; i < len; i++){
         I2CDMABuf_va[i] = buf[i];
     }
-    
+
     if(len < 8){
         client->addr = client->addr & I2C_MASK_FLAG;
         return i2c_master_send(client, buf, len);
     }else{
         client->addr = client->addr & I2C_MASK_FLAG | I2C_DMA_FLAG;
         return i2c_master_send(client, I2CDMABuf_pa, len);
-    } 
+    }
 #else
 	i2c_client->addr = i2c_client->addr & I2C_MASK_FLAG;
     ret = i2c_master_send(i2c_client, &buf[0], len);
 	if(ret<0)
 		printk("%s error\n",__func__);
-	
+
 	return ret;
 #endif
     return ret;
@@ -567,10 +567,10 @@ static int tpd_i2c_read(struct i2c_client *client, uint8_t *buf, int len , uint8
         i2c_client->addr = i2c_client->addr & I2C_MASK_FLAG | I2C_WR_FLAG | I2C_RS_FLAG;
         ret = i2c_master_send(i2c_client, &buf[0], (len << 8 | 1));
     }else{
-		
+
 		/**
 		struct i2c_msg msg;
-		
+
 		i2c_smbus_write_byte(i2c_client, addr);
 		msg.flags = i2c_client->flags & I2C_M_TEN;
 		msg.timing = 100;
@@ -594,14 +594,14 @@ static int tpd_i2c_read(struct i2c_client *client, uint8_t *buf, int len , uint8
 			}
 			for(i = 0; i < len; i++)
 			{
-			
+
 				buf[i] = I2CDMABuf_va[i];
 			}
 			return ret;
 		}
 		*/
 		//i2c_client->addr = i2c_client->addr & I2C_MASK_FLAG | I2C_WR_FLAG | I2C_RS_FLAG;
-		
+
 		//client->addr = client->addr & I2C_MASK_FLAG ;//| I2C_WR_FLAG | I2C_RS_FLAG;
 		/**
 		unsigned char buffer[256];
@@ -615,7 +615,7 @@ static int tpd_i2c_read(struct i2c_client *client, uint8_t *buf, int len , uint8
 			{
 				//ret = i2c_smbus_read_i2c_block_data(i2c_client,addr+ (ii<<2), len, (buf+ (ii<<2)));
 				buf[ii<<3]=addr+ii<<3;
-				
+
 				ret = i2c_master_send(i2c_client, &buf[ii<<3], (8<<8 | 1));
 				if(ret < 0)
 				{
@@ -625,7 +625,7 @@ static int tpd_i2c_read(struct i2c_client *client, uint8_t *buf, int len , uint8
 				printk("line 383 ret =%d",ret);
 				msleep(20);
 			}
-			
+
 			if(last_len > 0)
 			{
 				//ret = i2c_smbus_read_i2c_block_data(i2c_client,addr+ (ii<<2), last_len, (buf+ (ii<<2)));
@@ -644,16 +644,16 @@ static int tpd_i2c_read(struct i2c_client *client, uint8_t *buf, int len , uint8
 		I2CDMABuf_va[0] = addr;
     	I2CDMABuf_va[9] = 0xFF;
     	I2CDMABuf_va[8] = 0xFF;
-		
-        
+
+
         //ret = i2c_master_recv(client, I2CDMABuf_pa, ((len+1) << 8 | 1));
 		ret = i2c_master_recv(client, I2CDMABuf_pa, len);
-    
+
         if(ret < 0){
 			printk("%s:i2c read error.\n", __func__);
             return ret;
         }
-    
+
         for(i = 0; i < len; i++){
             buf[i] = I2CDMABuf_va[i];
         }
@@ -693,13 +693,13 @@ static int tpd_print_version(void) {
     pucCommandBuffer[6] = 0x00;
     pucCommandBuffer[7] = 0xD8;
     ret = tpd_i2c_write(i2c_client, pucCommandBuffer, 8);
-    msleep(10);  
+    msleep(10);
     waitCommandDone();
     ret = tpd_i2c_read(i2c_client, &verFw[0], 4, 0xA0);
 
-    printk("[mtk-tpd] ITE7260 Touch Panel Firmware Version %x %x %x %x \n", 
-            verFw[0], verFw[1], verFw[2], verFw[3]); 
-//get chip config version	
+    printk("[mtk-tpd] ITE7260 Touch Panel Firmware Version %x %x %x %x \n",
+            verFw[0], verFw[1], verFw[2], verFw[3]);
+//get chip config version
 	msleep(10);
 	waitCommandDone();
 	printk("[mtk-tpd] tpd_print_version 413line.\n");
@@ -710,10 +710,10 @@ static int tpd_print_version(void) {
     msleep(10);
     waitCommandDone();
 	ret = tpd_i2c_read(i2c_client, &verCfg[0], 8, 0xA0);
-    printk("[mtk-tpd] ITE7260 Touch Panel config Version %x %x %x %x \n", 
-            verCfg[1], verCfg[2], verCfg[3], verCfg[4]); 
-	
-	
+    printk("[mtk-tpd] ITE7260 Touch Panel config Version %x %x %x %x \n",
+            verCfg[1], verCfg[2], verCfg[3], verCfg[4]);
+
+
 	if ((verCfg[1] != cfg_rawData[config_size-8]) || (verCfg[2] != cfg_rawData[config_size-7]) || (verCfg[3] != cfg_rawData[config_size-6]) || (verCfg[4] != cfg_rawData[config_size-5]))
 		{
 		sum += 1;
@@ -722,8 +722,8 @@ static int tpd_print_version(void) {
 		{
 		sum += 2;
 		}
-		
-		printk("print sum = %d\n", sum); 
+
+		printk("print sum = %d\n", sum);
 		return sum;
 }
 static int tpd_FW_version(void) {
@@ -751,7 +751,7 @@ static int tpd_FW_version(void) {
     pucCommandBuffer[6] = 0x00;
     pucCommandBuffer[7] = 0xD8;
     ret = tpd_i2c_write(i2c_client, pucCommandBuffer, 8);
-    msleep(10);  
+    msleep(10);
     waitCommandDone();
     ret = tpd_i2c_read(i2c_client, &verFw[0], 4, 0xA0);
     sum = (verFw[0] << 24) | (verFw[1] << 16) | (verFw[2] << 8) | (verFw[3]);
@@ -763,7 +763,7 @@ static void IT7260_upgrade(void)
 	int bitsmask = 0;
 
 	bitsmask = tpd_print_version();
-#if 0	
+#if 0
 	if((bitsmask / 2)==1)
 	{
 		printk("FirmwareDownload");
@@ -788,7 +788,7 @@ static void IT7260_upgrade(void)
 		printk("1\n");
 		fnFirmwareDownload(fw_size,rawData,config_size,cfg_rawData);
 	#endif
-	
+
 	//fnFirmwareDownload(fw_size,rawData,config_size,cfg_rawData);
 }
 
@@ -809,17 +809,17 @@ static int tpd_i2c_probe(struct i2c_client *client, const struct i2c_device_id *
     i2c_client = client;
     printk("MediaTek it7260 touch panel i2c probe\n");
 
-	
-	
+
+
 	mt_set_gpio_mode(GPIO_CTP_RST_PIN, GPIO_CTP_RST_PIN_M_GPIO);
     mt_set_gpio_dir(GPIO_CTP_RST_PIN, GPIO_DIR_OUT);
-	mt_set_gpio_out(GPIO_CTP_RST_PIN, GPIO_OUT_ONE); 
+	mt_set_gpio_out(GPIO_CTP_RST_PIN, GPIO_OUT_ONE);
 	msleep(10);
 	printk("TPd enter power on---begin-\r\n");
 	it7260_power_switch(POWER_ON);
 	printk("TPd enter power on---end-\r\n");
 	msleep(40);
-	mt_set_gpio_out(GPIO_CTP_RST_PIN, GPIO_OUT_ZERO); 
+	mt_set_gpio_out(GPIO_CTP_RST_PIN, GPIO_OUT_ZERO);
 	msleep(100);
 
     FWversion = tpd_FW_version();
@@ -829,14 +829,14 @@ static int tpd_i2c_probe(struct i2c_client *client, const struct i2c_device_id *
     	printk("FWversion 1\n");
 		/*
 		msleep(20);
-    	mt_set_gpio_out(GPIO_CTP_RST_PIN, GPIO_OUT_ONE); 
+    	mt_set_gpio_out(GPIO_CTP_RST_PIN, GPIO_OUT_ONE);
 		msleep(40);
-	 	mt_set_gpio_out(GPIO_CTP_RST_PIN, GPIO_OUT_ZERO); 
+	 	mt_set_gpio_out(GPIO_CTP_RST_PIN, GPIO_OUT_ZERO);
 	 	*/
     }
     else
     {
-    	
+
     	printk("Not 7258 touch IC\n");
    		//mt_set_gpio_out(GPIO_CTP_RST_PIN, GPIO_OUT_ONE );
 		//msleep(100);
@@ -844,7 +844,7 @@ static int tpd_i2c_probe(struct i2c_client *client, const struct i2c_device_id *
     }
 
 
-  
+
 #ifdef I2C_SUPPORT_RS_DMA
     I2CDMABuf_va = (u8 *)dma_alloc_coherent(NULL, 4096, &I2CDMABuf_pa, GFP_KERNEL);
     if(!I2CDMABuf_va)
@@ -853,7 +853,7 @@ static int tpd_i2c_probe(struct i2c_client *client, const struct i2c_device_id *
         return -1;
     }
 #endif
-	
+
     mt_set_gpio_mode(GPIO_CTP_EINT_PIN, GPIO_CTP_EINT_PIN_M_EINT);
     mt_set_gpio_dir(GPIO_CTP_EINT_PIN, GPIO_DIR_IN);
     mt_set_gpio_pull_enable(GPIO_CTP_EINT_PIN, GPIO_PULL_ENABLE);
@@ -867,16 +867,16 @@ static int tpd_i2c_probe(struct i2c_client *client, const struct i2c_device_id *
     do{
 		tpd_i2c_read(i2c_client, buffer, 1, 0x80);
     }while( buffer[0] & 0x01 );
-	
+
     if(tpd_i2c_read(i2c_client, buffer, 2, 0xA0) < 0)
 	{
 		 TPD_DMESG("it7260 I2C probe try transfer error, line: %d\n", __LINE__);
 		// return -1; //ysong
 		goto __probe_fail;
 	}
-  
+
     thread = kthread_run(touch_event_handler, 0, CTP_NAME);
-    if (IS_ERR(thread)) { 
+    if (IS_ERR(thread)) {
         err = PTR_ERR(thread);
         printk(CTP_NAME " it7260 failed to create kernel thread: %d\n", err);
 		goto __probe_fail;
@@ -886,9 +886,10 @@ static int tpd_i2c_probe(struct i2c_client *client, const struct i2c_device_id *
 
 	#ifdef DOUBLE_CLICK_WAKE
 	input_set_capability(tpd->dev, EV_KEY, KEY_POWER);
+	input_set_capability(tpd->dev, EV_KEY, KEY_SOFT_WAKE);
 	#endif
-	
-    tpd_load_status = 1;  
+
+    tpd_load_status = 1;
     printk("DDD_____ 0xA0 : %X, %X\n", buffer[0], buffer[1]);  // add FAE   End
     return TPD_OK;
 
@@ -901,13 +902,13 @@ __probe_fail:
 }
 
 void tpd_eint_interrupt_handler(void)
-{	
+{
  //   printk("###########tp_int#############\n");
 	tpd_flag = 1;
 	wake_up_interruptible(&waiter);
-} 
+}
 
-static int tpd_i2c_remove(struct i2c_client *client) 
+static int tpd_i2c_remove(struct i2c_client *client)
 {
 #ifdef I2C_SUPPORT_RS_DMA
     if( I2CDMABuf_va ){
@@ -919,7 +920,7 @@ static int tpd_i2c_remove(struct i2c_client *client)
     return 0;
 }
 
-void tpd_down(int raw_x, int raw_y, int x, int y, int p) {	
+void tpd_down(int raw_x, int raw_y, int x, int y, int p) {
 
 	int temp;
 	#if MTK_LCM_PHYSICAL_ROTATION== 270
@@ -935,7 +936,7 @@ void tpd_down(int raw_x, int raw_y, int x, int y, int p) {
 		y = temp;
 	#else
 	#endif
-	
+
     input_report_abs(tpd->dev, ABS_PRESSURE, 128);
     input_report_key(tpd->dev, BTN_TOUCH, 1);
     input_report_abs(tpd->dev, ABS_MT_TOUCH_MAJOR, 128);
@@ -964,7 +965,7 @@ void tpd_up(int raw_x, int raw_y, int x, int y, int p) {
 		y = temp;
 	#else
 	#endif
-	
+
     input_report_abs(tpd->dev, ABS_PRESSURE, 0);
     input_report_key(tpd->dev, BTN_TOUCH, 0);
     input_report_abs(tpd->dev, ABS_MT_TOUCH_MAJOR, 0);
@@ -979,48 +980,48 @@ void tpd_up(int raw_x, int raw_y, int x, int y, int p) {
 #ifdef DOUBLE_CLICK_WAKE
 static void check_gesture(int gesture_id)
 {
-	
+
     printk("it7260 gesture_id==0x%x\n ",gesture_id);
-    
+
 	switch(gesture_id)
 	{
-		case GESTURE_DOUBLECLICK:	
-				input_report_key(tpd->dev, KEY_POWER, 1);
+		case GESTURE_DOUBLECLICK:
+				input_report_key(tpd->dev, KEY_SOFT_WAKE, 1);
 			    input_sync(tpd->dev);
-			     input_report_key(tpd->dev, KEY_POWER, 0);
-			    input_sync(tpd->dev);		    
+			     input_report_key(tpd->dev, KEY_SOFT_WAKE, 0);
+			    input_sync(tpd->dev);
 			break;
 #if 0
-		case GESTURE_LEFT:		     
+		case GESTURE_LEFT:
 		      input_report_key(tpd->dev, KEY_LEFT, 1);
 			    input_sync(tpd->dev);
 			     input_report_key(tpd->dev, KEY_LEFT, 0);
 			    input_sync(tpd->dev);
 			break;
-		case GESTURE_RIGHT:						
+		case GESTURE_RIGHT:
   				input_report_key(tpd->dev, KEY_RIGHT, 1);
 			    input_sync(tpd->dev);
 			     input_report_key(tpd->dev, KEY_RIGHT, 0);
 			    input_sync(tpd->dev);
- 
+
 			break;
-		case GESTURE_UP:	
+		case GESTURE_UP:
 			input_report_key(tpd->dev, KEY_UP, 1);
 			    input_sync(tpd->dev);
 			     input_report_key(tpd->dev, KEY_UP, 0);
 			    input_sync(tpd->dev);
-			    
+
 			break;
-		case GESTURE_DOWN:		
+		case GESTURE_DOWN:
 				input_report_key(tpd->dev, KEY_DOWN, 1);
 			    input_sync(tpd->dev);
 			     input_report_key(tpd->dev, KEY_DOWN, 0);
 			    input_sync(tpd->dev);
-		    
+
 			break;
 
 
-		case GESTURE_O:	
+		case GESTURE_O:
 							input_report_key(tpd->dev, KEY_POWER, 1);
 			    input_sync(tpd->dev);
 			     input_report_key(tpd->dev, KEY_POWER, 0);
@@ -1030,7 +1031,7 @@ static void check_gesture(int gesture_id)
 			    input_report_key(tpd->dev, KEY_O, 0);
 			    input_sync(tpd->dev);
 			break;
-		case GESTURE_W:			
+		case GESTURE_W:
 							input_report_key(tpd->dev, KEY_POWER, 1);
 			    input_sync(tpd->dev);
 			     input_report_key(tpd->dev, KEY_POWER, 0);
@@ -1039,9 +1040,9 @@ static void check_gesture(int gesture_id)
 			    input_sync(tpd->dev);
 			     input_report_key(tpd->dev, KEY_W, 0);
 			    input_sync(tpd->dev);
-			    
+
 			break;
-		case GESTURE_M:		
+		case GESTURE_M:
 							input_report_key(tpd->dev, KEY_POWER, 1);
 			    input_sync(tpd->dev);
 			     input_report_key(tpd->dev, KEY_POWER, 0);
@@ -1050,9 +1051,9 @@ static void check_gesture(int gesture_id)
 			    input_sync(tpd->dev);
 			     input_report_key(tpd->dev, KEY_M, 0);
 			    input_sync(tpd->dev);
-			    
+
 			break;
-		case GESTURE_E:		
+		case GESTURE_E:
 							input_report_key(tpd->dev, KEY_POWER, 1);
 			    input_sync(tpd->dev);
 			     input_report_key(tpd->dev, KEY_POWER, 0);
@@ -1061,9 +1062,9 @@ static void check_gesture(int gesture_id)
 			    input_sync(tpd->dev);
 			     input_report_key(tpd->dev, KEY_E, 0);
 			    input_sync(tpd->dev);
-			    
+
 			break;
-		case GESTURE_C:		
+		case GESTURE_C:
 							input_report_key(tpd->dev, KEY_POWER, 1);
 			    input_sync(tpd->dev);
 			     input_report_key(tpd->dev, KEY_POWER, 0);
@@ -1074,7 +1075,7 @@ static void check_gesture(int gesture_id)
 			 input_sync(tpd->dev);
 			break;
 
-		case GESTURE_S:		
+		case GESTURE_S:
 							input_report_key(tpd->dev, KEY_POWER, 1);
 			    input_sync(tpd->dev);
 			     input_report_key(tpd->dev, KEY_POWER, 0);
@@ -1096,7 +1097,7 @@ static void check_gesture(int gesture_id)
 		 input_sync(tpd->dev);
 		break;
 
-		case GESTURE_Z:	
+		case GESTURE_Z:
 							input_report_key(tpd->dev, KEY_POWER, 1);
 			    input_sync(tpd->dev);
 			     input_report_key(tpd->dev, KEY_POWER, 0);
@@ -1108,7 +1109,7 @@ static void check_gesture(int gesture_id)
 			break;
 #endif
 		default:
-		
+
 			break;
 	}
 
@@ -1122,7 +1123,7 @@ static bool flag = 0;
 
 static int touch_event_handler( void *unused )
 {
-    struct sched_param param = { .sched_priority = RTPM_PRIO_TPD }; 
+    struct sched_param param = { .sched_priority = RTPM_PRIO_TPD };
     unsigned char pucPoint[14];
 	unsigned char key_temp=0;
 #ifndef I2C_SUPPORT_RS_DMA
@@ -1133,7 +1134,7 @@ static int touch_event_handler( void *unused )
     int xraw, yraw;
     int i = 0;
 
-    sched_setscheduler(current, SCHED_RR, &param); 
+    sched_setscheduler(current, SCHED_RR, &param);
 	mt_eint_unmask(CUST_EINT_TOUCH_PANEL_NUM);
     do{
         set_current_state(TASK_INTERRUPTIBLE);
@@ -1141,10 +1142,10 @@ static int touch_event_handler( void *unused )
         wait_event_interruptible(waiter, tpd_flag != 0);
         tpd_flag = 0;
         TPD_DEBUG_SET_TIME;
-        set_current_state(TASK_RUNNING); 
+        set_current_state(TASK_RUNNING);
 
         ret = tpd_i2c_read(i2c_client, &pucPoint[0], 1, 0x80);
-        
+
     //   printk("[IT7260 mtk-tpd] Query status= 0x%x\n", pucPoint[0]);
 		if (!( pucPoint[0] & 0x80 || pucPoint[0] & 0x01 )){
 			printk("[mtk-tpd] No point information\n");
@@ -1154,7 +1155,7 @@ static int touch_event_handler( void *unused )
 	//	printk("1\n");
 #ifdef I2C_SUPPORT_RS_DMA
         ret = tpd_i2c_read(i2c_client, &pucPoint[0], 14, 0xE0);
-#else        
+#else
         ret = tpd_i2c_read(i2c_client, &cPoint[0], 8, 0xC0);
         ret += tpd_i2c_read(i2c_client, &ePoint[0], 6, 0xE0);
         for(i=0; i<6; i++) pucPoint[i] = ePoint[i];
@@ -1165,7 +1166,7 @@ static int touch_event_handler( void *unused )
 //	printk("***********************pucPoint[1] = %d\n",pucPoint[1]);
 //	printk("***********************pucPoint[2] = %d\n",pucPoint[2]);
 
-#ifdef I2C_SUPPORT_RS_DMA        
+#ifdef I2C_SUPPORT_RS_DMA
         if (ret == 0xF01) {
 #else
         if (ret == 0xE02) {
@@ -1190,13 +1191,13 @@ static int touch_event_handler( void *unused )
 	//				printk("***********************pucPoint[1] = %d\n",pucPoint[1]);
 		    	    if ( pucPoint[2] ){
 		//				printk("-----------------------------------------------pucPoint[2]---------------------.\n");
-						//tpd_button(tpd_keys_dim_local[pucPoint[1]-1][0], tpd_keys_dim_local[pucPoint[1]-1][1], 1); 
+						//tpd_button(tpd_keys_dim_local[pucPoint[1]-1][0], tpd_keys_dim_local[pucPoint[1]-1][1], 1);
 						input_report_key(tpd->dev, tpd_it7260_keys[(pucPoint[1]-1)],1);//ysong
 						input_sync(tpd->dev);
 						key_temp = pucPoint[1]-1;
 		       		}
 					else{
-						//tpd_button(tpd_keys_dim_local[pucPoint[1]-1][0], tpd_keys_dim_local[pucPoint[1]-1][1], 1); 
+						//tpd_button(tpd_keys_dim_local[pucPoint[1]-1][0], tpd_keys_dim_local[pucPoint[1]-1][1], 1);
 						input_report_key(tpd->dev, tpd_it7260_keys[key_temp],0);
 						input_sync(tpd->dev);
 					}
@@ -1242,26 +1243,26 @@ static int touch_event_handler( void *unused )
 				// finger 1
 		        if (pucPoint[0] & 0x01) {
 				    //char pressure_point;
-		
+
 				    xraw = ((pucPoint[3] & 0x0F) << 8) + pucPoint[2];
 				    yraw = ((pucPoint[3] & 0xF0) << 4) + pucPoint[4];
 					//pressure_point = pucPoint[5] & 0x0f;
 					//TPD_DEBUG("[mtk-tpd] input Read_Point1 x=%d y=%d p=%d\n",xraw,yraw,pressure_point);
-					//tpd_calibrate(&xraw, &yraw);			
+					//tpd_calibrate(&xraw, &yraw);
 				    x[0] = xraw;
-					
+
 				    y[0] = yraw;
 				    finger[0] = 1;
 	//				printk("***********************x[0] = %d,y[0]=%d\n",x[0],y[0]);
 				    tpd_down(x[0], y[0], x[0], y[0], 0);
 					//printk("*******************tpd_down:x0=%d,y0=%d\n",x[0],y[0]);
-					
-				} 
+
+				}
 				else if( finger[0] ){
 				    tpd_up(x[0], y[0], x[0], y[0], 0);
 				    finger[0] = 0;
 				}
-	
+
 				// finger 2
 				if (pucPoint[0] & 0x02) {
 				    //char pressure_point;
@@ -1285,17 +1286,17 @@ static int touch_event_handler( void *unused )
 		}else{
 		    TPD_DEBUG("[mtk-tpd] i2c read communcate error in getting pixels : 0x%x\n", ret);
 		}
-		
+
 exit_work_func:
 		mt_eint_unmask(CUST_EINT_TOUCH_PANEL_NUM);
-    } while (!kthread_should_stop()); 
+    } while (!kthread_should_stop());
     return 0;
 }
 
-static int tpd_local_init(void) 
+static int tpd_local_init(void)
 {
     int r;
-    
+
 	TPD_DMESG("Focaltech it7260 I2C Touchscreen Driver (Built %s @ %s)\n", __DATE__, __TIME__);
 		//power on, need confirm with SA
 
@@ -1303,7 +1304,7 @@ static int tpd_local_init(void)
         printk("unable to add i2c driver.\n");
         return -1;
     }
-    
+
     /* register device (/dev/IT7260 CTP) */
     //ctp_dev.parent = tpd->dev;
     r = misc_register(&ctp_dev);
@@ -1311,22 +1312,22 @@ static int tpd_local_init(void)
         printk("register ctp device failed (%d)\n", r);
         return -1;
     }
-   
 
-#if (defined(TPD_WARP_START) && defined(TPD_WARP_END))    
+
+#if (defined(TPD_WARP_START) && defined(TPD_WARP_END))
     TPD_DO_WARP = 1;
     memcpy(tpd_wb_start, tpd_wb_start_local, TPD_WARP_CNT*4);
     memcpy(tpd_wb_end, tpd_wb_start_local, TPD_WARP_CNT*4);
-#endif 
+#endif
 
 #if (defined(TPD_HAVE_CALIBRATION) && !defined(TPD_CUSTOM_CALIBRATION))
     memcpy(tpd_calmat, tpd_def_calmat_local, 8*4);
-    memcpy(tpd_def_calmat, tpd_def_calmat_local, 8*4);	
-#endif  
-    printk("end %s, %d\n", __FUNCTION__, __LINE__);  
+    memcpy(tpd_def_calmat, tpd_def_calmat_local, 8*4);
+#endif
+    printk("end %s, %d\n", __FUNCTION__, __LINE__);
 
     tpd_type_cap = 1;
-    
+
     return 0;
 }
 
@@ -1342,8 +1343,8 @@ static void tpd_suspend(struct i2c_client *client, pm_message_t message)
   if(gesture_function_enable == 1 )
   {
     TPD_DEBUG("IT7260 call suspend,enter ilde\n");    
-    ret = tpd_i2c_write(i2c_client, Wrbuf_idle, 4);   
-    msleep(20); 
+    ret = tpd_i2c_write(i2c_client, Wrbuf_idle, 4);
+    msleep(20);
 	if(ret != 4){
         TPD_DEBUG("[mtk-tpd] i2c write communcate error during suspend: 0x%x\n", ret);
     }else
@@ -1354,7 +1355,7 @@ static void tpd_suspend(struct i2c_client *client, pm_message_t message)
 #endif
 	{
 		tpd_halt = 1;
-		mt_eint_mask(CUST_EINT_TOUCH_PANEL_NUM); 
+		mt_eint_mask(CUST_EINT_TOUCH_PANEL_NUM);
 		it7260_power_switch(POWER_OFF);
   	}
 	printk("it7260 tpd_suspend end\n");
@@ -1362,7 +1363,7 @@ static void tpd_suspend(struct i2c_client *client, pm_message_t message)
 
 /* Function to manage power-on resume */
 static void tpd_resume(struct i2c_client *client)
-{   
+{
     #define TRY_COUNTS 5
     int ret = 0;
     unsigned char Wrbuf[2] = { 0x20, 0x6F};
@@ -1374,27 +1375,27 @@ static void tpd_resume(struct i2c_client *client)
     mt_set_gpio_dir(GPIO_CTP_RST_PIN, GPIO_DIR_OUT);
     if(FWversion&0x05170000) //7258
     {
-      mt_set_gpio_out(GPIO_CTP_RST_PIN, GPIO_OUT_ONE); 
+      mt_set_gpio_out(GPIO_CTP_RST_PIN, GPIO_OUT_ONE);
 	  msleep(20);
-	  mt_set_gpio_out(GPIO_CTP_RST_PIN, GPIO_OUT_ZERO); 
+	  mt_set_gpio_out(GPIO_CTP_RST_PIN, GPIO_OUT_ZERO);
     }
     else
     {
     	msleep(100);
-    	mt_set_gpio_out(GPIO_CTP_RST_PIN, GPIO_OUT_ZERO); 
+    	mt_set_gpio_out(GPIO_CTP_RST_PIN, GPIO_OUT_ZERO);
 		msleep(100);
      	mt_set_gpio_out(GPIO_CTP_RST_PIN, GPIO_OUT_ONE );
     }
 
-	mt_eint_unmask(CUST_EINT_TOUCH_PANEL_NUM); 
+	mt_eint_unmask(CUST_EINT_TOUCH_PANEL_NUM);
     tpd_halt = 0;
-    // liuzhiyong 20120619 update code ++ 
+    // liuzhiyong 20120619 update code ++
 //	tpd_up(0, 0, 0, 0, 0);
 	tpd_up(0, 0, 0, 0, 0);
 	input_sync(tpd->dev);
 	printk("it7260 tpd_resume end\n");
 }
-		
+
 static struct tpd_driver_t tpd_device_driver = {
 	//.tpd_device_name = "IT7260",
 	.tpd_device_name =CTP_NAME,  // TPD_DEVICE,
@@ -1405,7 +1406,7 @@ static struct tpd_driver_t tpd_device_driver = {
     .tpd_have_button = 1,
 #else
     .tpd_have_button = 0,
-#endif 
+#endif
 };
 
 
@@ -1656,7 +1657,7 @@ bool fnExitFirmwareUpgradeMode(void)
 extern int mtk_wdt_enable(enum wk_wdt_en en);
 bool fnFirmwareDownload(unsigned int unFirmwareLength, u8* pFirmware, unsigned int unConfigLength, u8* pConfig)
 {
-	
+
 	if((unFirmwareLength == 0 || pFirmware == NULL) && (unConfigLength == 0 || pConfig == NULL)){
 		printk("[IT7260] XXX %s, %d\n", __FUNCTION__, __LINE__);
 		return false;
@@ -1725,7 +1726,7 @@ static int __init tpd_driver_init(void)
 #endif
 	if(tpd_driver_add(&tpd_device_driver) < 0)
 		printk("add generic driver failed\n");
-       
+
     return 0;
 }
 
@@ -1740,4 +1741,3 @@ static void __exit tpd_driver_exit(void)
 
 module_init(tpd_driver_init);
 module_exit(tpd_driver_exit);
-
