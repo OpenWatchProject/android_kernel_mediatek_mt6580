@@ -1174,12 +1174,15 @@ static int touch_event_handler( void *unused )
 	    // gesture
 		    if (pucPoint[0] & 0xF0) {
 		    	#ifdef DOUBLE_CLICK_WAKE
-				if((gesture_function_enable == 1) && (tpd_halt == 1 ))
+				if(gesture_function_enable == 1)
 				{
 			    	 if (pucPoint[0] == 0x10)
 			    	 {
-			    	 	check_gesture(GESTURE_DOUBLECLICK);
-						continue;
+				          input_report_key(tpd->dev, KEY_POWER, 1);
+			            input_sync(tpd->dev);
+			            input_report_key(tpd->dev, KEY_POWER, 0);
+			            input_sync(tpd->dev);
+                  continue;
 			    	  }
 				}
 		    	#endif
