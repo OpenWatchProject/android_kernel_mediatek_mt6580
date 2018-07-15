@@ -168,3 +168,7 @@ endif
 ifeq ($(CONFIG_MTK_FOCALTECH_DRIVER_ALL),y)
 obj-y	+=	focaltech_all/
 endif
+
+ifeq ($(CONFIG_TOUCHSCREEN_MTK_MSG2833),y)
+obj-y	+=  msg2833/
+endif

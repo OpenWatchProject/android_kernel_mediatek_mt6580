@@ -1043,6 +1043,10 @@ config MTK_NOVATEK_NT11004
 config MTK_FOCALTECH_DRIVER_ALL		
 		bool "Focaltech driver all in one for Mediatek package"
         default n     
+
+config TOUCHSCREEN_MTK_MSG2833
+	bool "MSG2833 for Mediatek package"
+	default n
 	
 endif
 
