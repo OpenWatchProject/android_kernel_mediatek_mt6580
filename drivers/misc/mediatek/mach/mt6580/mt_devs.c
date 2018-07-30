@@ -2808,7 +2808,10 @@ void mt_reserve(void)
 #if defined(CONFIG_MTK_RAM_CONSOLE_USING_DRAM)
 	memblock_reserve(CONFIG_MTK_RAM_CONSOLE_DRAM_ADDR, CONFIG_MTK_RAM_CONSOLE_DRAM_SIZE);
 #endif
+
+#if defined(CONFIG_MTK_AEE_MRDUMP)
         mrdump_mini_reserve_memory();
+#endif
 
 #ifdef CONFIG_MTK_ECCCI_DRIVER
 	ccci_md_mem_reserve();
