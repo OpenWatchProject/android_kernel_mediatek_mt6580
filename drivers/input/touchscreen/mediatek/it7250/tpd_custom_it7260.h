@@ -124,7 +124,7 @@
 #define MAX_BUFFER_SIZE             130
 
 //for double click wakeup 
-//#define DOUBLE_CLICK_WAKE
+#define DOUBLE_CLICK_WAKE
 #ifdef DOUBLE_CLICK_WAKE
 #define GESTURE_DOUBLECLICK 0x01
 #endif

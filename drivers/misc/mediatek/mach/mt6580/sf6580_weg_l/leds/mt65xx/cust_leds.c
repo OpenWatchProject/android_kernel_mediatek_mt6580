@@ -12,7 +12,7 @@
 extern int mtkfb_set_backlight_level(unsigned int level);
 //extern int mtkfb_set_backlight_pwm(int div);
 unsigned int set_backlight_first = 1;
-int gesture_function_enable = 0;
+int gesture_function_enable = 1;
 unsigned int tmp_current_level = 0;
 //brian-add
 unsigned int tmp_previous_level = 32;
