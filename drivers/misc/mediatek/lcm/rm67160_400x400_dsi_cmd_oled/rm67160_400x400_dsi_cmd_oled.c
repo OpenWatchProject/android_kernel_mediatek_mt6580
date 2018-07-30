@@ -89,28 +89,38 @@ static struct LCM_setting_table {
     unsigned char para_list[64];
 };
 
-
+//
+// References: https://android.googlesource.com/kernel/msm/+/9f98b442a433678cf7d8ad9e4a775c1ce20798c6/arch/arm/boot/dts/apq8026-sturgeon/dsi-panel-edo-rm67160-hvga-video.dtsi
+//
 
 static struct LCM_setting_table lcm_initialization_setting[] = 
 {
-{0xFE,1,{0x07}},
-{0x07,1,{0x4F}},
-{0xFE,1,{0x0A}},
-{0x1C,1,{0x1B }}, //cmd :0x10
-{0xFE,1,{0x00}},  
-{0x35,1,{0x00}}, 
+	{0xFE,1,{0x07}},
+	{0x07,1,{0x4F}},
+	{0xFE,1,{0x0A}},
+	{0x1C,1,{0x1B }}, //cmd :0x10
+	{0xFE,1,{0x05}},
+	{0x05,1,{0x13}},
+	{0xFE,1,{0x01}},
+	{0x30,1,{0x45}},
+	{0xFE,1,{0x00}},
+	{0x35,1,{0x00}},
 
-{0x51, 1, {0x00}},      //switch off backlight untill system's setting
-             
+	{0x51, 1, {0x00}},//switch off backlight untill system's setting
 
 	{0x11,1,{0x00}},// Sleep-Out
 	{REGFLAG_DELAY, 120, {}},
+	{0x36,1,{0x40}},
 	{0x29,1,{0x00}},// Display On                                                                                 
-  	{REGFLAG_DELAY, 50, {}},
+	{REGFLAG_DELAY, 50, {}},
 
 	{REGFLAG_END_OF_TABLE, 0x00, {}}	
 
 };
+
+//
+// References: https://android.googlesource.com/kernel/msm/+/9f98b442a433678cf7d8ad9e4a775c1ce20798c6/arch/arm/boot/dts/apq8026-sturgeon/dsi-panel-edo-rm67160-hvga-video.dtsi
+//
 
 
 
@@ -122,20 +132,19 @@ static struct LCM_setting_table lcm_set_window[] = {
 
 
 static struct LCM_setting_table lcm_sleep_out_setting[] = {
-	{REGFLAG_DELAY, 5, {}},
-	// Sleep Out
+	{0x13, 1, {0x00}},
 	{0x11, 1, {0x00}},
-	{REGFLAG_DELAY, 120, {}},
-
-	// Display ON
-	{0x29, 1, {0x00}},
 	{REGFLAG_DELAY, 10, {}},
-	{REGFLAG_END_OF_TABLE, 99, {}}
+
+	{0x38, 1, {0x00}},
+	{REGFLAG_DELAY, 10, {}},
+ 	{REGFLAG_END_OF_TABLE,99, {}}
 };
 
-
 static struct LCM_setting_table lcm_clk_sleep_mode_in_setting[] = {
-	// Display off sequence
+	{0x13, 1, {0x00}},
+	{0x11, 1, {0x00}},
+	{REGFLAG_DELAY, 10, {}},
 	{0x39, 1, {0x00}},
 	{REGFLAG_DELAY, 10, {}},
 
@@ -152,6 +161,19 @@ static struct LCM_setting_table lcm_deep_sleep_mode_in_setting[] = {
 	{REGFLAG_DELAY, 120, {}},
 
 	{REGFLAG_END_OF_TABLE,99, {}}
+};
+
+static struct LCM_setting_table lcm_deep_sleep_mode_out_setting[] = {
+	{REGFLAG_DELAY, 5, {}},
+	// Sleep Out
+	{0x11, 1, {0x00}},
+	{REGFLAG_DELAY, 120, {}},
+
+	// Display ON
+	{0x29, 1, {0x00}},
+	{REGFLAG_DELAY, 10, {}},
+
+	{REGFLAG_END_OF_TABLE, 99, {}}
 };
 
 
@@ -257,6 +279,7 @@ static void lcm_get_params(LCM_PARAMS *params)
 
 static void lcm_init(void)
 {
+    printk("RM67160 lcm_init");
     SET_RESET_PIN(1);
     MDELAY(10);
     SET_RESET_PIN(0);
@@ -265,44 +288,27 @@ static void lcm_init(void)
     MDELAY(120);
     push_table(lcm_initialization_setting, sizeof(lcm_initialization_setting) / sizeof(struct LCM_setting_table), 1);
 	lcm_setbacklight(NULL,0);   ///shtudown backlight again
+    LCM_PRINT(" =========== %s, %d \n", "rm67160_400x400 lcm_init", __LINE__);
 }
 
 
 static void lcm_suspend(void)
 {
 	printk("RM67160 lcm_suspend,idle_clock_mode=%d\n",idle_clock_mode);
-	if(idle_clock_mode == 1)
-	{
-    	push_table(lcm_clk_sleep_mode_in_setting, sizeof(lcm_clk_sleep_mode_in_setting) / sizeof(struct LCM_setting_table), 1);
-	}
-	else
-	{
-		
-    	push_table(lcm_deep_sleep_mode_in_setting, sizeof(lcm_deep_sleep_mode_in_setting) / sizeof(struct LCM_setting_table), 1);
-		MDELAY(20);
-	}
-	LCM_PRINT(" =========== %s, %d \n", "rm67160_480x480 lcm_suspend", __LINE__);
+
+	push_table(lcm_deep_sleep_mode_in_setting, sizeof(lcm_deep_sleep_mode_in_setting) / sizeof(struct LCM_setting_table), 1);
+
+	LCM_PRINT(" =========== %s, %d \n", "rm67160_400x400 lcm_suspend", __LINE__);
 }
 
 
 static void lcm_resume(void)
 {
-#if 0
-	//MDELAY(500);
-	push_table(lcm_sleep_out_setting, sizeof(lcm_sleep_out_setting) / sizeof(struct LCM_setting_table), 1);
-	lcm_setbacklight(NULL,0);   ///shtudown backlight again
-	LCM_PRINT(" =========== %s, %d \n", "rm67160_480x480 lcm_resume", __LINE__);
-#else
-	if(idle_clock_mode == 1)
-	{
-		//push_table(lcm_sleep_out_setting, sizeof(lcm_sleep_out_setting) / sizeof(struct LCM_setting_table), 1);
-		lcm_init();
-	}
-	else
-	{
-		lcm_init();
-	}
-#endif
+	printk("RM67160 lcm_suspend,idle_clock_mode=%d\n",idle_clock_mode);
+
+	push_table(lcm_deep_sleep_mode_out_setting, sizeof(lcm_deep_sleep_mode_out_setting) / sizeof(struct LCM_setting_table), 1);
+
+	LCM_PRINT(" =========== %s, %d \n", "rm67160_400x400 lcm_resume", __LINE__);
 }
 
 
