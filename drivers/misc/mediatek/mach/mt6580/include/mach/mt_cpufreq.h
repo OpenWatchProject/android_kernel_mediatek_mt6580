@@ -149,14 +149,29 @@ enum pmic_wrap_phase_id {
 
 /* IDX mapping */
 enum {
-    IDX_NM_VCORE,		/* 0 */
+    IDX_NM_NOT_USED1,		/* 0 */ /* PMIC_WRAP_PHASE_NORMAL */
+    IDX_NM_NOT_USED2,		/* 1 */
+    IDX_NM_VCORE_HPM,		/* 2 */
+    IDX_NM_VCORE_TRANS2,	/* 3 */
+    IDX_NM_VCORE_TRANS1,	/* 4 */
+    IDX_NM_VCORE_LPM,		/* 5 */
+    IDX_NM_VRF18_0_PWR_ON,	/* 6 */
+    IDX_NM_VRF18_0_SHUTDOWN,	/* 7 */
 
     NR_IDX_NM,
 };
 
 enum {
-	IDX_DI_VCORE_NORMAL,		/* 0 */ /* PMIC_WRAP_PHASE_DEEPIDLE*/
-	IDX_DI_VCORE_SLEEP,			/* 1 */
+	IDX_DI_VPROC_NORMAL,	/* 0 */ /* PMIC_WRAP_PHASE_DEEPIDLE */
+	IDX_DI_VPROC_SLEEP,		/* 1 */
+	IDX_DI_VCORE_HPM,		/* 2 */
+	IDX_DI_VCORE_TRANS2,	/* 3 */
+	IDX_DI_VCORE_TRANS1,	/* 4 */
+	IDX_DI_VCORE_LPM,		/* 5 */
+	//IDX_DI_VSRAM_SLEEP,		/* 6 */
+	IDX_DI_VRF18_0_SHUTDOWN,	/* 7 */
+	//IDX_DI_VSRAM_NORMAL,	/* 8 */
+	IDX_DI_VRF18_0_PWR_ON,	/* 9 */
 
     NR_IDX_DI,
 };
