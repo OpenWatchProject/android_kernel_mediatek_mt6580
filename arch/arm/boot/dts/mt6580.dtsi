@@ -713,18 +713,6 @@
 				<0 52 0x8>;
 		};
 
-		SPI@0x1100C000 {
-			compatible = "mediatek,SPI";
-			cell-index = <0>;
-			spi-padmacro = <0>;
-			/* spi-cs=<0 1>; */
-			/* spi-clk=<1 1>; */
-			/* spi-mo=<2 1>; */
-			/* spi-mi=<3 1>; */
-			reg = <0x1100C000 0x1000>;
-			interrupts = <0 64 0x8>;
-		};
-
 		THERM_CTRL@0x1100D000 {
 			compatible = "mediatek,THERM_CTRL";
 			reg = <0x1100D000 0x1000>;
