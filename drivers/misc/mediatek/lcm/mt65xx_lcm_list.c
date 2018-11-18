@@ -245,8 +245,8 @@ extern LCM_DRIVER rm68191_dsi_vdo_lcm_drv;
 extern LCM_DRIVER nt35350_dsi_vdo_lcm_drv;
 extern LCM_DRIVER rm67160_400x400_dsi_cmd_oled_drv;
 extern LCM_DRIVER rm67160_400x400_dsi_cmd_oled_hehui_drv;
+extern LCM_DRIVER creator_w2_st7796s_boe_dsi_lcm_drv;
 
- 
 LCM_DRIVER* lcm_driver_list[] =
 {
 #if defined(OTM1284A_HD720_DSI_VDO_TM)
@@ -1121,6 +1121,9 @@ LCM_DRIVER* lcm_driver_list[] =
 
 #if defined(RM67160_400X400_DSI_CMD_OLED_HEHUI)
 	&rm67160_400x400_dsi_cmd_oled_hehui_drv,
+#endif
+#if defined(CREATOR_W2_ST7796S_BOE_DSI)
+	&creator_w2_st7796s_boe_dsi_lcm_drv,
 #endif
 };
 
